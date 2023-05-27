@@ -2,12 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const bodyparser = require('body-parser');
 const app = express();
-
+const cors = require('cors');
 // all the middlewares we need. 
 
 // for post requests
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 
 app.get("/", (req, res) => {
