@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+
 import { Link } from 'react-router-dom'
-import NewList from '../list/NewList'
 const Home = () => {
 
     return (
