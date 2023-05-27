@@ -10,7 +10,6 @@ const Home = () => {
             </button>
             <Link to="/newList">
                 <button>
-
                     Make a new list
                 </button>
             </Link>

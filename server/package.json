@@ -6,10 +6,15 @@
   "scripts": {
     "start": "nodemon server.js"
   },
-  "keywords": [ ],
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.2"
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "connect-mongo": "^5.0.0",
+    "crypt": "^0.0.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.0"
   }
 }

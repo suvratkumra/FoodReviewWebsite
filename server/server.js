@@ -3,17 +3,24 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const app = express();
 const cors = require('cors');
+const listRouter = require('./routes/List/List');
+const connect = require('./utils/dbConnect');
+const jwt = require('jsonwebtoken')
+
+const MongoStore = require('connect-mongo');
+const userRouter = require('./routes/User/User');
+// start the db
+connect();
+
 // all the middlewares we need. 
 
-// for post requests
+
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-
-app.get("/", (req, res) => {
-    res.send("This is what you expected");
-})
+app.use("/v1/user", userRouter);
+app.use("/v1/list", listRouter);
 
 const port = process.env.PORT || 8080;
 
