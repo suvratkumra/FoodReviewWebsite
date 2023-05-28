@@ -1,5 +1,13 @@
 # FoodReviewWebsite 
 ---
+
+```
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "age": 25
+}
+``` 
 ## Project setup and files required in path environment
 - `npm`
 - `npx`
