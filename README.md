@@ -5,7 +5,7 @@
 - `npx`
 - In `server` folder
   - Need to install the dependencies before the code can compile and run
-    - ``` 
+    - ``` {
         npm install express
         npm install jsonwebtoken
         npm install dotenv
@@ -17,9 +17,9 @@
         npm install connect-mongo
         npm install body-parser
         npm install nodemon 
-     ```
+     } ```
      ** OR **
-     ``` npm install express jsonwebtoken dotenv express-session mongodb mongoose cloudinary multer-storage-cloudinary connect-mongo body-parser nodemon ```
+     ```{ npm install express jsonwebtoken dotenv express-session mongodb mongoose cloudinary multer-storage-cloudinary connect-mongo body-parser nodemon }```
       
   - Need to setup up `.env` file with variables: 
     - `MONGODB_URL`: The url to the mongodb server for server to connect to
