@@ -15,7 +15,7 @@
         npm install multer-storage-cloudinary
         npm install connect-mongo
         npm install body-parser
-    ```
+        npm install nodemon ```
   - Need to setup up `.env` file with variables: 
     - `MONGODB_URL`: The url to the mongodb server for server to connect to
     - `PORT`: The localhost port of server
