@@ -1,10 +1,10 @@
 const { Router } = require("express");
-const protectedCreateList = require("../../utils/protected");
 const User = require('../../model/UserModel')
 const bcrypt = require("bcrypt");
 const customError = require("../../utils/errorTemplate");
 const customResponse = require("../../utils/responseTemplate");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const authorization = require("../../utils/protected");
 
 const userRouter = Router();
 
@@ -13,9 +13,12 @@ userRouter.post("/login", async (req, res) => {
     if (!email || !password) {
         customError(req, res, 406, "You must add all the fields");
     }
+    if(typeof email !== 'string' || typeof password !== 'string')
+    {
+        customError(req, res, 403, "Invalid form of credentials")
+    }
 
     // find the user with the email 
-
     const user = await User.findOne({ email });
     if (user) {
         const hashedPassword = await bcrypt.compare(password, user.password);
@@ -38,6 +41,10 @@ userRouter.post("/create", async (req, res) => {
     if (!email || !password) {
         customError(req, res, 406, "You must add all the fields");
     }
+    if (typeof email !== 'string' || typeof password !== 'string') {
+        customError(req, res, 403, "Invalid form of credentials")
+    }
+
     else {
         // hash the password
         const salt = await bcrypt.genSalt(10);
@@ -52,21 +59,10 @@ userRouter.post("/create", async (req, res) => {
     }
 });
 
-userRouter.get("/", (req, res) => {
-    if (!req.headers.authorization) {
-        customError(req, res, 401, "Authorization token missing");
-    }
-    // spliting the authorization token
-    const token = req.headers.authorization.split(" ")[1];
-
-    const decodedToken = jwt.verify(token, process.env.JSONWEBTOKEN_SECRET, (err, success) => {
-        if (err) {
-            customError(req, res, 403, "Token Invalid/Expired. Please sign in again");
-        }
-        else {
-            customResponse(req, res, 200, "", success);
-        }
-    });
+userRouter.get("/", authorization, async (req, res) => {
+    const user = await User.findById(req.UserIdExtracted.data);
+    console.log(user);
+    customResponse(req, res, 200, "You got access", {"user_details": req.UserIdExtracted});
 })
 
 module.exports = userRouter;
