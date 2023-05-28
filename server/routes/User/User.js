@@ -13,8 +13,7 @@ userRouter.post("/login", async (req, res) => {
     if (!email || !password) {
         customError(req, res, 406, "You must add all the fields");
     }
-    if(typeof email !== 'string' || typeof password !== 'string')
-    {
+    if (typeof email !== 'string' || typeof password !== 'string') {
         customError(req, res, 403, "Invalid form of credentials")
     }
 
@@ -36,12 +35,14 @@ userRouter.post("/login", async (req, res) => {
     }
 })
 
+
+//CREATE
 userRouter.post("/create", async (req, res) => {
     const { email, username, password } = req.body;
     if (!email || !password) {
         customError(req, res, 406, "You must add all the fields");
     }
-    if (typeof email !== 'string' || typeof password !== 'string') {
+    else if (typeof email !== 'string' || typeof password !== 'string') {
         customError(req, res, 403, "Invalid form of credentials")
     }
 
@@ -59,10 +60,51 @@ userRouter.post("/create", async (req, res) => {
     }
 });
 
+// FORGOT PASSWORD
+userRouter.post("/login/forgot-password", async (req, res, next) => {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword) {
+        customError(req, res, 406, "You must add all the fields");
+    }
+    else if (typeof email !== 'string' || typeof newPassword !== 'string') {
+        customError(req, res, 403, "Invalid form of credentials")
+    }
+
+    // logic goes here.
+    else {
+        // TODO: add the ability to send a verification link to the email and 
+        // then the user is able to change the password.
+        // hash the password
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(newPassword, salt);
+
+        const user = await User.findOneAndUpdate({
+            email
+        }, {
+            password: hashPassword
+        }, { timestamps: true }
+        );
+
+        customResponse(req, res, 200, "User Updated", user);
+
+    }
+})
+
+
+
+
+
+
+
+
+
+// -------------------
+// TEMP
+// -------------------
 userRouter.get("/", authorization, async (req, res) => {
     const user = await User.findById(req.UserIdExtracted.data);
     console.log(user);
-    customResponse(req, res, 200, "You got access", {"user_details": req.UserIdExtracted});
+    customResponse(req, res, 200, "You got access", { "user_details": req.UserIdExtracted });
 })
 
 module.exports = userRouter;
