@@ -1,12 +1,13 @@
 import { useReducer, createContext, useState } from 'react'
 import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS } from './authActionConstants'
 import axios from 'axios';
+import e from 'cors';
 
 const INITIAL_STATE = {
     userID: null,
     token: null,
     loggedIn: false,
-
+    error: { code: null, message: null }
 }
 
 export const AuthContext = createContext();
@@ -20,11 +21,18 @@ const reducer = (state, action) => {
                 ...state,
                 userID: action.payload[0]._id,
                 token: action.payload[1].token,
-                loggedIn: true
+                loggedIn: true,
+                error: { code: null, message: null }
             };
         }
         case LOGIN_FAILED: {
-            return state;
+            return {
+                ...state,
+                error: {
+                    code: action?.payload?.code,
+                    message: action?.payload?.message
+                }
+            }
         }
         case REGISTER_SUCCESS: {
             return state;
@@ -47,7 +55,7 @@ const AuthContextProvider = ({ children }) => {
                 "Content-Type": "application/json",
             },
         };
-        // TODO: assuming all the form data is in correct form, it is checked on the login page.
+
         try {
             const res = await axios.post("http://localhost:3000/v1/user/login", formdata, config);
             if (res?.data?.status === 200) {
@@ -58,12 +66,12 @@ const AuthContextProvider = ({ children }) => {
             }
 
         }
-        catch (e) {
-
+        catch (error) {
             dispatch({
                 type: "LOGIN_FAILED",
-                payload: e?.message
+                payload: error
             })
+            console.log(state);
         }
     }
 
