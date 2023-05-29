@@ -6,13 +6,13 @@ import Lists from "./components/list/Lists";
 import Navbar from "./components/Navbar/Navbar";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
-import AuthContext from "./contexts/AuthenticationContext";
+import AuthContextProvider from "./contexts/authContext/AuthContext";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <AuthContext>
+        <AuthContextProvider>
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -21,7 +21,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
           </Routes>
-        </AuthContext>
+        </AuthContextProvider>
       </BrowserRouter>
     </>
   );

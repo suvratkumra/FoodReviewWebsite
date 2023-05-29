@@ -1,29 +1,21 @@
 import React, { useContext, useState } from 'react'
-import { AuthContext } from '../../contexts/AuthenticationContext'
 import axios from 'axios';
+import { AuthContext } from '../../contexts/authContext/AuthContext';
 
 const Login = () => {
-    const { updateJWT, state } = useContext(AuthContext);
+    const { loginUserAction, state } = useContext(AuthContext);
     const [formData, setFormData] = useState({ email: "", password: "" })
     const [emailError, setEmailError] = useState("");
     // console.log(add(1, 2))
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         if (formData.email === "" || formData.password === "") {
             alert("Provide all fields please");
             return;
         }
-        try {
-            // login
-            const response = await axios.post("http://localhost:3000/v1/user/login", formData);
-            console.log(state);
-            updateJWT(response.data.response[1].token);
-        }
-        catch (err) {
-            console.log(err);
-        }
+        loginUserAction(formData);
     }
 
     const handleChangeFields = (e) => {
