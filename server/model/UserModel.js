@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const List = require("./ListModel");
 
 const userModel = new mongoose.Schema({
     email: {
@@ -12,10 +13,23 @@ const userModel = new mongoose.Schema({
         type: String,
         required: true
     },
-
     profilePic: {
         type: String
-    }
+    },
+    address: {
+        type: String
+    },
+    phoneNumber: {
+        type: String
+    },
+    lists: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: List
+    },
+    verification: {
+        // VERIFIED / NOT_VERIFIED
+        type: String
+    },
 },
     { timestamps: true });
 
