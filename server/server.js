@@ -9,6 +9,11 @@ const jwt = require('jsonwebtoken')
 
 const MongoStore = require('connect-mongo');
 const userRouter = require('./routes/User/User');
+const profileRouter = require('./routes/Profile/Profile');
+
+const session = require('express-session');
+
+
 // start the db
 connect();
 
@@ -19,8 +24,11 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
+
 app.use("/v1/user", userRouter);
 app.use("/v1/list", listRouter);
+app.use("/v1/profile", profileRouter);
+
 
 const port = process.env.PORT || 8080;
 

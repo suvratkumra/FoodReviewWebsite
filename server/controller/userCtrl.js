@@ -92,8 +92,8 @@ const userDetailsByIdCtrl = async (req, res) => {
         customResponse(req, res, 200, "Authorized", user);
 
     }
-    catch (e) {
-        customError(req, res, e?.code, e?.message);
+    catch (err) {
+        customError(req, res, err?.code, err?.message);
     }
 
 }

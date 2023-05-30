@@ -1,9 +1,5 @@
 const { Router } = require("express");
-const User = require('../../model/UserModel')
-const bcrypt = require("bcrypt");
-const customError = require("../../utils/errorTemplate");
 const customResponse = require("../../utils/responseTemplate");
-const jwt = require('jsonwebtoken');
 const authorization = require("../../utils/protected");
 const { loginUserCtrl, createUserCtrl, forgotPasswordCtrl, userDetailsByIdCtrl } = require("../../controller/userCtrl");
 
