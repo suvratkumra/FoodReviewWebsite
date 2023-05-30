@@ -24,7 +24,7 @@ const userModel = new mongoose.Schema({
     },
     lists: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: List
+        ref: "List"
     },
     verification: {
         // VERIFIED / NOT_VERIFIED

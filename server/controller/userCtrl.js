@@ -88,7 +88,7 @@ const userDetailsByIdCtrl = async (req, res) => {
         // extract the id
         const id = req.params.id;
 
-        const user = await User.findById(id)
+        const user = await User.findById(id);
         customResponse(req, res, 200, "Authorized", user);
 
     }
