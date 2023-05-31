@@ -12,6 +12,7 @@ const userRouter = require('./routes/User/User');
 const profileRouter = require('./routes/Profile/Profile');
 
 const session = require('express-session');
+const feedbackRouter = require('./routes/Feedback/Feedback');
 
 
 // start the db
@@ -28,6 +29,7 @@ app.use(cors());
 app.use("/v1/user", userRouter);
 app.use("/v1/list", listRouter);
 app.use("/v1/profile", profileRouter);
+app.use("/v1/feedback", feedbackRouter);
 
 
 const port = process.env.PORT || 8080;
