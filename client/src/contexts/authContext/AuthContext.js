@@ -71,7 +71,6 @@ const AuthContextProvider = ({ children }) => {
                 type: "LOGIN_FAILED",
                 payload: error
             })
-            console.log(state);
         }
     }
 

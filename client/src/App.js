@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import AuthContextProvider from "./contexts/authContext/AuthContext";
+import Authorization from "./components/authorization/Authorization";
 
 function App() {
   return (
@@ -15,7 +16,12 @@ function App() {
         <AuthContextProvider>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/"
+              element={
+                <Authorization>
+                  <Home />
+                </Authorization>
+              } />
             <Route path="/newList" element={<NewList />} />
             <Route path="/lists" element={<Lists />} />
             <Route path="/signup" element={<Signup />} />
