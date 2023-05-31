@@ -20,10 +20,10 @@ userRouter.get("/:id", authorization, userDetailsByIdCtrl);
 // -------------------
 // TEMP
 // -------------------
-userRouter.get("/", authorization, async (req, res) => {
-    const user = await User.findById(req.UserIdExtracted.data);
-    console.log(user);
-    customResponse(req, res, 200, "You got access", { "user_details": req.UserIdExtracted });
-})
+// userRouter.get("/", authorization, async (req, res) => {
+//     const user = await User.findById(req.UserIdExtracted.data);
+//     console.log(user);
+//     customResponse(req, res, 200, "You got access", { "user_details": req.UserIdExtracted });
+// })
 
 module.exports = userRouter;
