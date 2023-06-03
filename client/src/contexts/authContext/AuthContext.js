@@ -1,7 +1,6 @@
 import { useReducer, createContext, useState } from 'react'
 import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS } from './authActionConstants'
 import axios from 'axios';
-import e from 'cors';
 
 const INITIAL_STATE = {
     userID: null,
@@ -45,36 +44,45 @@ const reducer = (state, action) => {
         }
     }
 }
-
 const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
     const loginUserAction = async (formdata) => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-
         try {
-            const res = await axios.post("http://localhost:3000/v1/user/login", formdata, config);
-            if (res?.data?.status === 200) {
-                dispatch({
-                    type: "LOGIN_SUCCESS",
-                    payload: res?.data?.response
-                })
-            }
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
 
-        }
-        catch (error) {
+            const res = await axios.post(
+                "http://localhost:3000/v1/user/login",
+                formdata,
+                config
+            );
+
+            dispatch({
+                type: "LOGIN_SUCCESS",
+                payload: res?.data?.response,
+            });
+
+            return state;
+        } catch (error) {
             dispatch({
                 type: "LOGIN_FAILED",
-                payload: error
-            })
-        }
-    }
+                payload: error,
+            });
 
-    return (<AuthContext.Provider value={{ loginUserAction, state }}> {children} </AuthContext.Provider>)
-}
+            throw state;
+        }
+    };
+
+    return (
+        <AuthContext.Provider value={{ loginUserAction, state }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
 
 export default AuthContextProvider;

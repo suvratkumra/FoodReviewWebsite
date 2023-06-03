@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../contexts/authContext/AuthContext';
 import { Link } from 'react-router-dom'
 
@@ -6,9 +6,12 @@ const Authorization = ({ children }) => {
     // get the token from the state of the authProvider we have.
     const { state } = useContext(AuthContext);
     console.log(state);
+    const [tokenAvailable, setTokenAvailable] = useState(false);
+    useEffect(() => {
+        setTokenAvailable(state.token !== null);
+    }, [state])
 
     // token boolean
-    const tokenAvailable = state.token !== null;
     if (tokenAvailable) {
         return (< div > {children} </div >)
     }

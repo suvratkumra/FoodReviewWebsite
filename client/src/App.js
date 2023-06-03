@@ -13,21 +13,19 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <AuthContextProvider>
-          <Navbar />
-          <Routes>
-            <Route path="/"
-              element={
-                <Authorization>
-                  <Home />
-                </Authorization>
-              } />
-            <Route path="/newList" element={<NewList />} />
-            <Route path="/lists" element={<Lists />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </AuthContextProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/"
+            element={
+              // <Authorization>
+              <Home />
+              // </Authorization>
+            } />
+          <Route path="/newList" element={<NewList />} />
+          <Route path="/lists" element={<Lists />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </BrowserRouter>
     </>
   );
