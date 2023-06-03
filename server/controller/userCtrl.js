@@ -34,7 +34,9 @@ const createUserCtrl = async (req, res) => {
             username,
             password: hashPassword
         });
-        customResponse(req, res, 200, "New user created", user);
+
+        const token = createNewToken(user);
+        customResponse(req, res, 200, "New user created", user, { token });
     }
     catch (err) {
         customError(req, res, err?.code, err?.message);

@@ -40,8 +40,9 @@ const reducer = (state, action) => {
             const newState = {
                 ...state,
                 createProfileCompleted: true,
-                username: action?.payload?.username,
-                userID: action?.payload?._id
+                username: action?.payload[0]?.username,
+                userID: action?.payload[0]?._id,
+                token: action?.payload[1]?.token
             }
             console.log(newState);
             return newState;
@@ -104,9 +105,10 @@ const AuthContextProvider = ({ children }) => {
                 .then((res) => {
                     dispatch({
                         type: "REGISTER_SUCCESS",
-                        payload: res.data.response[0]
+                        payload: res.data.response
                     })
                     resolve(state);
+                    console.log(";p: ", res.data.response);
                 })
                 .catch((error) => {
                     dispatch({

@@ -18,7 +18,7 @@ const Signup = () => {
     useEffect(() => {
         if (state.createProfileCompleted) {
             // redirect to the login page.
-            navigate("/login");
+            navigate("/");
         }
         console.log(state);
     }, [state.createProfileCompleted, navigate, state])
