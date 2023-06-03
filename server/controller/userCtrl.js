@@ -23,7 +23,7 @@ const loginUserCtrl = async (req, res) => {
 
 const createUserCtrl = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, username, password } = req.body;
 
         // hash the password
         const salt = await bcrypt.genSalt(10);
@@ -31,6 +31,7 @@ const createUserCtrl = async (req, res) => {
 
         const user = await User.create({
             email,
+            username,
             password: hashPassword
         });
         customResponse(req, res, 200, "New user created", user);

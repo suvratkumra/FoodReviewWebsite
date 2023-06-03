@@ -16,13 +16,14 @@ const Login = () => {
     useEffect(() => {
         // check to see if logged in and then redirect to the home page.
         if (state.token !== null) {
+            localStorage.setItem("state", JSON.stringify(state));
             navigate('/');
             // console.log(state);
         }
         else {
             setLoginError(true);
         }
-    }, [state.token, navigate]);
+    }, [state, state.token, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

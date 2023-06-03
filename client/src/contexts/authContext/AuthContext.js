@@ -3,6 +3,7 @@ import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS } from '
 import axios from 'axios';
 
 const INITIAL_STATE = {
+    createProfileCompleted: false,
     userID: null,
     username: null,
     token: null,
@@ -36,10 +37,23 @@ const reducer = (state, action) => {
             }
         }
         case REGISTER_SUCCESS: {
-            return state;
+            const newState = {
+                ...state,
+                createProfileCompleted: true,
+                username: action?.payload?.username,
+                userID: action?.payload?._id
+            }
+            console.log(newState);
+            return newState;
         }
         case REGISTER_FAILED: {
-            return state;
+            return {
+                ...state,
+                error: {
+                    code: action?.payload?.code,
+                    message: action?.payload?.message
+                }
+            }
         }
         default: {
             return state;
@@ -79,8 +93,33 @@ const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const registerUserAction = async (formdata) => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        return new Promise((resolve, reject) => {
+            axios.post("http://localhost:3000/v1/user/create", formdata, config)
+                .then((res) => {
+                    dispatch({
+                        type: "REGISTER_SUCCESS",
+                        payload: res.data.response[0]
+                    })
+                    resolve(state);
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: "REGISTER_FAILED",
+                        payload: error
+                    })
+                    reject(state);
+                });
+        })
+    };
+
     return (
-        <AuthContext.Provider value={{ loginUserAction, state }}>
+        <AuthContext.Provider value={{ registerUserAction, loginUserAction, state }}>
             {children}
         </AuthContext.Provider>
     );

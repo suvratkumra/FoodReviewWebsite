@@ -15,10 +15,15 @@ const Authorization = ({ children }) => {
     if (tokenAvailable) {
         return (< div > {children} </div >)
     }
+
     return (
         <>
             <h1>ERROR, you need to log in first.</h1>
             <Link to="/login"> Login </Link>
+
+            <hr />
+            <h1> New user? </h1>
+            <Link to="/signup"> register today! </Link>
         </>
     )
 }

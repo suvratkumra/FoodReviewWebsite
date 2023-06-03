@@ -1,13 +1,27 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../../contexts/authContext/AuthContext';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+    const { registerUserAction, state } = useContext(AuthContext);
     const [formData, setFormData] = useState({
+        username: "",
         email: "",
         password: ""
     })
 
+    const navigate = useNavigate();
+
     const [emailError, setEmailError] = useState("");
+
+    useEffect(() => {
+        if (state.createProfileCompleted) {
+            // redirect to the login page.
+            navigate("/login");
+        }
+        console.log(state);
+    }, [state.createProfileCompleted, navigate, state])
 
     const handleValueChange = (e) => {
         // change the fields
@@ -19,6 +33,7 @@ const Signup = () => {
         }));
 
     }
+
 
     const validateEmail = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,26 +52,16 @@ const Signup = () => {
             return;
         }
 
-        try {
-            const response = await axios.post("http://localhost:3000/v1/user/create", formData);
-            console.log(response);
-            if (response.status === 200) {
-                // TODO: redirect to the login page.
-                window.location.href = "/login";
-            }
-
-        } catch (err) {
-
-        }
-        // sending the data to backend and getting the response
+        registerUserAction(formData);
     }
     return (
         <>
             <div>Signup</div>
             <form onSubmit={handleSignupSubmit}>
                 <p style={{ color: "red" }}> {emailError} </p>
-                <input type='email' name='email' id='email' placeholder='john.doe@gmail.com' value={formData.email} onChange={handleValueChange} onBlur={validateEmail} />
-                <input type='password' name='password' id='password' placeholder='password' value={formData.password} onChange={handleValueChange} />
+                <input type='email' required name='email' id='email' placeholder='john.doe@gmail.com' value={formData.email} onChange={handleValueChange} onBlur={validateEmail} />
+                <input type='username' required name='username' id='username' placeholder='John.Doe' value={formData.username} onChange={handleValueChange} />
+                <input type='password' required name='password' id='password' placeholder='password' value={formData.password} onChange={handleValueChange} />
                 <button type="submit"> Sign Up! </button>
             </form>
 
