@@ -27,7 +27,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setSigninButtonClicked(true);
+
 
         setLoadingSign(true);
         if (formData.email === "" || formData.password === "") {
@@ -35,8 +35,13 @@ const Login = () => {
             return;
         }
         loginUserAction(formData)
-            .then((res) => { setLoadingSign(false); })
-            .catch((err) => { });
+            .then((res) => {
+                setLoadingSign(false);
+            })
+            .catch((err) => {
+                setLoadingSign(false);
+                setSigninButtonClicked(true);
+            });
     }
 
     const handleChangeFields = (e) => {
