@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const INITIAL_STATE = {
     userID: null,
+    username: null,
     token: null,
     loggedIn: false,
     error: { code: null, message: null }
@@ -19,6 +20,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 userID: action.payload[0]._id,
+                username: action.payload[0].username,
                 token: action.payload[1].token,
                 loggedIn: true,
                 error: { code: null, message: null }

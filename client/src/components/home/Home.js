@@ -6,7 +6,7 @@ const Home = () => {
     const { state } = useContext(AuthContext);
     return (
         <>
-            <h1>Welcome to the food review app {state.token} </h1>
+            <h1>Welcome to the food review app {state?.username} </h1>
             <button>
                 Continue with your list
             </button>

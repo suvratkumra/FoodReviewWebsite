@@ -2,12 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
 const Signup = () => {
-
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     })
-
 
     const [emailError, setEmailError] = useState("");
 

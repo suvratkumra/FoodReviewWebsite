@@ -27,8 +27,6 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
-
         setLoadingSign(true);
         if (formData.email === "" || formData.password === "") {
             alert("Provide all fields please");
