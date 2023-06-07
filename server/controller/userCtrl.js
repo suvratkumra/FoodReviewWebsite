@@ -26,6 +26,8 @@ const loginUserCtrl = async (req, res) => {
     }
 };
 
+// @brief: 
+// User will be created in 2 DB, One is User and One is Profile, both will be made and in future to retrieve the user, we will access the Profile DB. 
 const createUserCtrl = async (req, res) => {
     try {
         const { email, username, password } = req.body;
@@ -34,7 +36,6 @@ const createUserCtrl = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
-        
         const userProfile = await Profile.create({
             email, 
             username
@@ -42,17 +43,15 @@ const createUserCtrl = async (req, res) => {
 
         const profileId = userProfile._id;
         
-        //////// TODOOO 
-        
         const user = await User.create({
             email,
             username,
             password: hashPassword,
-            profileID: profileId
+            profileId: profileId
         });
 
         const token = createNewToken(user);
-        customResponse(req, res, 200, "New user created with profile", user, { token }, { userProfile });
+        customResponse(req, res, 200, "New user created with profile", user, { token });
     }
     catch (err) {
         customError(req, res, err?.code, err?.message);
