@@ -5,6 +5,7 @@ const customResponse = require("../utils/responseTemplate");
 const jwt = require('jsonwebtoken');
 const authorization = require("../utils/protected");
 const createNewToken = require("../utils/createNewToken");
+const Profile = require("../model/ProfileModel");
 
 const loginUserCtrl = async (req, res) => {
     try {
@@ -15,6 +16,10 @@ const loginUserCtrl = async (req, res) => {
         if (hashedPassword) {
             const token = createNewToken(user);
             customResponse(req, res, 200, "Log in successful", user, { token });
+        }
+        else
+        {
+            customError(req, res, 401, "Invalid Credentials");
         }
     } catch (err) {
         customError(req, res, err?.code, err?.message);
@@ -29,14 +34,25 @@ const createUserCtrl = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
+        
+        const userProfile = await Profile.create({
+            email, 
+            username
+        });
+
+        const profileId = userProfile._id;
+        
+        //////// TODOOO 
+        
         const user = await User.create({
             email,
             username,
-            password: hashPassword
+            password: hashPassword,
+            profileID: profileId
         });
 
         const token = createNewToken(user);
-        customResponse(req, res, 200, "New user created", user, { token });
+        customResponse(req, res, 200, "New user created with profile", user, { token }, { userProfile });
     }
     catch (err) {
         customError(req, res, err?.code, err?.message);
@@ -65,17 +81,19 @@ const forgotPasswordCtrl = async (req, res, next) => {
     }
 }
 
-const userDetailsByIdCtrl = async (req, res) => {
-    try {
-        // extract the id
-        const id = req.params.id;
+// @deprecated
+// DO NOT USE THIS TO EXTRACT THE ID.
+// const userDetailsByIdCtrl = async (req, res) => {
+//     try {
+//         // extract the id
+//         const id = req.params.id;
 
-        const user = await User.findById(id);
-        customResponse(req, res, 200, "Authorized", user);
-    }
-    catch (err) {
-        customError(req, res, err?.code, err?.message);
-    }
-}
+//         const user = await User.findById(id);
+//         customResponse(req, res, 200, "Authorized", user);
+//     }
+//     catch (err) {
+//         customError(req, res, err?.code, err?.message);
+//     }
+// }
 
-module.exports = { loginUserCtrl, createUserCtrl, forgotPasswordCtrl, userDetailsByIdCtrl };
+module.exports = { loginUserCtrl, createUserCtrl, forgotPasswordCtrl };

@@ -15,7 +15,7 @@ userRouter.post("/create", createUserCtrl);
 userRouter.post("/login/forgot-password", forgotPasswordCtrl)
 
 // GET USER DETAILS BY ID
-userRouter.get("/:id", authorization, userDetailsByIdCtrl);
+// userRouter.get("/:id", authorization, userDetailsByIdCtrl);
 
 // -------------------
 // TEMP
