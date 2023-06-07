@@ -15,6 +15,9 @@ const loginUserCtrl = async (req, res) => {
         const hashedPassword = await bcrypt.compare(password, user.password);
         if (hashedPassword) {
             const token = createNewToken(user);
+            // adding the profileid ot the req 
+            req.profileId = JSON.stringify(req.profileId);
+            // console.log(JSON.stringify(req.profileId));
             customResponse(req, res, 200, "Log in successful", user, { token });
         }
         else
@@ -38,7 +41,8 @@ const createUserCtrl = async (req, res) => {
 
         const userProfile = await Profile.create({
             email, 
-            username
+            username, 
+            verification: false,     // default value.
         });
 
         const profileId = userProfile._id;
@@ -47,7 +51,7 @@ const createUserCtrl = async (req, res) => {
             email,
             username,
             password: hashPassword,
-            profileId: profileId
+            profileId: profileId,
         });
 
         const token = createNewToken(user);

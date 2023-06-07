@@ -20,7 +20,7 @@ profileRouter.get("/:id", authorization, async(req, res) => {
         const userProfile = await Profile.findById(id);
 
         // display all the details to the user
-        customResponse(req, res, 200, "Authorized", {user});
+        customResponse(req, res, 200, "Authorized", { userProfile});
         
     } catch (error) {
         customError(req, res, error?.status, error?.message);

@@ -13,10 +13,6 @@ const userModel = new mongoose.Schema({
         type: String,
         required: true
     },
-    verification: {
-        // VERIFIED / NOT_VERIFIED
-        type: String
-    },
     profileId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Profile"
