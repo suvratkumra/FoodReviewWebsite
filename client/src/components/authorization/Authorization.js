@@ -10,9 +10,6 @@ const Authorization = ({ children }) => {
     // stuff which needs to be taken care of whenever it is available or every second
     useEffect(() => {
         setTokenAvailable(state.token !== null);
-        setTimeout(() => {
-            setIsPageReady(true);
-        }, 250);   // for 0.25 second.
     }, [state])
 
     return (
@@ -20,6 +17,7 @@ const Authorization = ({ children }) => {
             {tokenAvailable ?
                 (< div > {children} </div >) :
                 (<div>
+
                     <h1>ERROR, you need to log in first.</h1>
                     <Link to="/login"> Login </Link>
                     <h1> New user? </h1>
