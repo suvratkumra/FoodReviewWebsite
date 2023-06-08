@@ -1,5 +1,5 @@
 import { useReducer, createContext, useState } from 'react'
-import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS, GET_PROFILE_SUCCESS } from './authActionConstants'
+import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS } from './authActionConstants'
 import axios from 'axios';
 
 const INITIAL_STATE = {
@@ -59,12 +59,7 @@ const reducer = (state, action) => {
                 }
             }
         }
-        case GET_PROFILE_SUCCESS: {
-            return {
-                ...state, 
-                
-            }
-        }
+        
         default: {
             return state;
         }

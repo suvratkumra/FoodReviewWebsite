@@ -4,6 +4,7 @@ import { AuthContext } from "../authContext/AuthContext";
 
 
 const INITIAL_STATE = {
+    entireProfileExtracted: false, 
     email: null,
     username: null,
     profilePic: null,
@@ -22,6 +23,7 @@ const reducer = (state, action) => {
         case "GET_PROFILE_SUCCESS": {
             return {
                 ...state,
+                entireProfileExtracted: true,
                 email: action.payload.email,
                 username: action.payload.username,
                 profilePic: action.payload.profilePic,
