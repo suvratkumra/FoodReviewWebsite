@@ -3,11 +3,13 @@ import { Routes, Route, BrowserRouter } from "react-router-dom"
 import Home from "./components/home/Home";
 import NewList from "./components/list/NewList";
 import Lists from "./components/list/Lists";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
-import AuthContextProvider from "./contexts/authContext/AuthContext";
 import Authorization from "./components/authorization/Authorization";
+import Logout from "./components/logout/Logout";
+import Profile from "./components/profile/Profile";
+import About from "./components/about/About";
 
 function App() {
   return (
@@ -25,6 +27,24 @@ function App() {
           <Route path="/lists" element={<Lists />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout"
+            element={
+              <Authorization>
+                <Logout />
+              </Authorization>
+            } />
+          <Route path="/about"
+            element={
+              <Authorization>
+                <About />
+              </Authorization>
+            } />
+          <Route path="/profile"
+            element={
+              <Authorization>
+                <Profile />
+              </Authorization>
+            } />
         </Routes>
       </BrowserRouter>
     </>

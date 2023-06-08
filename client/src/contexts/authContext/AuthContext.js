@@ -5,6 +5,7 @@ import axios from 'axios';
 const INITIAL_STATE = {
     createProfileCompleted: false,
     userID: null,
+    profileID: null, // extract when the user logs in.
     username: null,
     token: null,
     loggedIn: false,
