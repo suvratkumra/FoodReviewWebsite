@@ -1,5 +1,5 @@
 import { useReducer, createContext, useState } from 'react'
-import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS } from './authActionConstants'
+import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS, GET_PROFILE_SUCCESS } from './authActionConstants'
 import axios from 'axios';
 
 const INITIAL_STATE = {
@@ -22,6 +22,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 userID: action.payload[0]._id,
+                profileID: action.payload[0].profileId,
                 username: action.payload[0].username,
                 token: action.payload[1].token,
                 loggedIn: true,
@@ -43,6 +44,7 @@ const reducer = (state, action) => {
                 createProfileCompleted: true,
                 username: action?.payload[0]?.username,
                 userID: action?.payload[0]?._id,
+                profileID: action?.payload[0]?.profileID,
                 token: action?.payload[1]?.token
             }
             console.log(newState);
@@ -55,6 +57,12 @@ const reducer = (state, action) => {
                     code: action?.payload?.code,
                     message: action?.payload?.message
                 }
+            }
+        }
+        case GET_PROFILE_SUCCESS: {
+            return {
+                ...state, 
+                
             }
         }
         default: {
@@ -78,6 +86,8 @@ const AuthContextProvider = ({ children }) => {
                 formdata,
                 config
             );
+
+            console.log(res?.data?.response);
 
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -109,7 +119,7 @@ const AuthContextProvider = ({ children }) => {
                         payload: res.data.response
                     })
                     resolve(state);
-                    console.log(";p: ", res.data.response);
+                    // console.log(";p: ", res.data.response);
                 })
                 .catch((error) => {
                     dispatch({
@@ -120,6 +130,8 @@ const AuthContextProvider = ({ children }) => {
                 });
         })
     };
+
+    
 
     return (
         <AuthContext.Provider value={{ registerUserAction, loginUserAction, state }}>
