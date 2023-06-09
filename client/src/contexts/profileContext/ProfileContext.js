@@ -40,12 +40,17 @@ const reducer = (state, action) => {
                 error: action.payload.error
             }
         }
+        case "LOGOUT_USER": {
+            return INITIAL_STATE;
+        }
+
     }
 }
 
 const ProfileContextProvider = ({ children }) => {
 
     const details = useContext(AuthContext);
+    const { deleteAllAuthAction } = useContext(AuthContext);
     const userState = details.state;
 
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
@@ -77,8 +82,17 @@ const ProfileContextProvider = ({ children }) => {
 
     }
 
+    const deleteAllDetailsAction = () => {
+        // empty up the state.
+        dispatch({
+            type: "LOGOUT_USER",
+            payload: {}
+        })
+        deleteAllAuthAction();
+    }
+
     return (
-        <ProfileContext.Provider value={{ state, getProfileDetailsAction }}>
+        <ProfileContext.Provider value={{ state, deleteAllDetailsAction, getProfileDetailsAction }}>
             {children}
         </ProfileContext.Provider>
     )

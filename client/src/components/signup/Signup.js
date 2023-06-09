@@ -20,7 +20,7 @@ const Signup = () => {
             // redirect to the login page.
             navigate("/");
         }
-        console.log(state);
+        //console.log(state);
     }, [state.createProfileCompleted, navigate, state])
 
     const handleValueChange = (e) => {

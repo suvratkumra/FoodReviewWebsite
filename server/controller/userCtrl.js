@@ -84,6 +84,15 @@ const forgotPasswordCtrl = async (req, res, next) => {
     }
 }
 
+// const logoutCtrl = async (req, res) => {
+//     try {
+//         // remove all the json web token stored 
+        
+//     } catch (error) {
+        
+//     }
+// }
+
 // @deprecated
 // DO NOT USE THIS TO EXTRACT THE ID.
 // const userDetailsByIdCtrl = async (req, res) => {

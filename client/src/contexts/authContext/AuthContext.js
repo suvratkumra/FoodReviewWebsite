@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     username: null,
     token: null,
     loggedIn: false,
-    error: { code: null, message: null }
+    error: { code: null, message: null },
+    loggedOut: false
 }
 
 export const AuthContext = createContext();
@@ -47,7 +48,7 @@ const reducer = (state, action) => {
                 profileID: action?.payload[0]?.profileID,
                 token: action?.payload[1]?.token
             }
-            console.log(newState);
+            //console.log(newState);
             return newState;
         }
         case REGISTER_FAILED: {
@@ -59,7 +60,15 @@ const reducer = (state, action) => {
                 }
             }
         }
-        
+
+        case "LOGOUT_USER": {
+            return { ...INITIAL_STATE, loggedOut: true };
+        }
+
+        case "LOGOUT_USER_VARIABLE": {
+            return { ...state, loggedOut: action.payload.value }
+        }
+
         default: {
             return state;
         }
@@ -82,7 +91,7 @@ const AuthContextProvider = ({ children }) => {
                 config
             );
 
-            console.log(res?.data?.response);
+           // console.log(res?.data?.response);
 
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -126,10 +135,22 @@ const AuthContextProvider = ({ children }) => {
         })
     };
 
-    
+    const deleteAllAuthAction = () => {
+        // empty up the state.
+        dispatch({
+            type: "LOGOUT_USER"
+        })
+    }
+
+    const setLogoutBooleanAction = (value) => {
+        dispatch({
+            type: "LOGOUT_USER_VARIABLE",
+            payload: value
+        });
+    }
 
     return (
-        <AuthContext.Provider value={{ registerUserAction, loginUserAction, state }}>
+        <AuthContext.Provider value={{ setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, state }}>
             {children}
         </AuthContext.Provider>
     );

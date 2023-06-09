@@ -15,7 +15,11 @@ const Navbar = () => {
         if (userId !== null) {
             setUserIdFound(true);
         }
-    }, [state, userId])
+        else
+        {
+            setUserIdFound(false);
+        }
+    }, [state, userId, state.userID])
 
     return (
         <div>

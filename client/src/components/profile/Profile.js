@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react';
 import { ProfileContext } from '../../contexts/profileContext/ProfileContext';
 
 const Profile = () => {
-    const { state, getProfileDetailsAction } = useContext(ProfileContext);
+    const { getProfileDetailsAction } = useContext(ProfileContext);
 
     const [profileDetails, setProfileDetails] = useState({});
-    const [laodingSymbol, setLoadingSymbol] = useState(true);
+    const [loadingSymbol, setLoadingSymbol] = useState(true);
 
     useEffect(() => {
         getProfileDetailsAction()
@@ -15,7 +15,6 @@ const Profile = () => {
             .catch((err) => {
                 setProfileDetails(err);
             });
-        // console.log(profileDetails);
     }, [getProfileDetailsAction]);
 
     return (
@@ -26,7 +25,7 @@ const Profile = () => {
                 </div>
             ))}
         </div>
-    )
+    );
 }
 
-export default Profile
+export default Profile;
