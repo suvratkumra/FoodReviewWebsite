@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { ProfileContext } from '../../contexts/profileContext/ProfileContext';
 
 const Profile = () => {
-    const { getProfileDetailsAction } = useContext(ProfileContext);
+    const { state, getProfileDetailsAction } = useContext(ProfileContext);
 
     const [profileDetails, setProfileDetails] = useState({});
     const [laodingSymbol, setLoadingSymbol] = useState(true);
@@ -15,18 +15,16 @@ const Profile = () => {
             .catch((err) => {
                 setProfileDetails(err);
             });
-    }, [profileDetails]);
+        // console.log(profileDetails);
+    }, [getProfileDetailsAction]);
 
     return (
         <div>
-            {Object.values(profileDetails).map((value, index) => {
-                {return (
-                    <div key = {index}>
-                        <p>{value}</p>
-
-                    </div>
-                )}
-            })}
+            {Object.entries(profileDetails).map(([key, value]) => (
+                <div key={key}>
+                    <p>{key}: {value}</p>
+                </div>
+            ))}
         </div>
     )
 }
