@@ -3,6 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../../contexts/authContext/AuthContext';
 import loadingSign from '../../images/loading-sign.png'
 import { useNavigate } from 'react-router-dom';
+import "../../output.css"
 
 const Login = () => {
     const { loginUserAction, state } = useContext(AuthContext);
@@ -65,8 +66,11 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <p style={{ color: "red" }}> {emailError} </p>
                 {loginError && signinButtonClicked && <p style={{ color: "red" }}> Incorrect credentials/try again. </p>}
-                <input type="email" id="email" name="email" placeholder='john.doe@gmail.com' value={formData.email} onChange={handleChangeFields} onBlur={validateEmail} />
+
+                <input className="text-3xl font-bold underline" type="email" id="email" name="email" placeholder='john.doe@gmail.com' value={formData.email} onChange={handleChangeFields} onBlur={validateEmail} />
+
                 <input type="password" id="password" name="password" placeholder='password' value={formData.password} onChange={handleChangeFields} />
+
                 <button type='submit'> Log In! </button>
             </form>
             <div>

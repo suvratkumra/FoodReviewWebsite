@@ -20,7 +20,6 @@ function App() {
 
   return (
     <>
-    
       <BrowserRouter>
         <GlobalHandler/>
         <Navbar />
