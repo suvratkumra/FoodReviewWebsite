@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../../contexts/authContext/AuthContext';
 import loadingSign from '../../images/loading-sign.png'
 import { useNavigate } from 'react-router-dom';
-import "../../output.css"
+// import "../../output.css"
 
 const Login = () => {
     const { loginUserAction, state } = useContext(AuthContext);

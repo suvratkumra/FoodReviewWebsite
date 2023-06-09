@@ -26,9 +26,9 @@ function App() {
         <Routes>
           <Route path="/"
             element={
-              <Authorization>
+              // <Authorization>
                 <Home />
-              </Authorization>
+              // </Authorization> 
             } />
           <Route path="/newList" element={<NewList />} />
           <Route path="/lists" element={<Lists />} />
