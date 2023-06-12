@@ -13,7 +13,7 @@ const GlobalHandler = () => {
             setLogoutBooleanAction(false);
         }, 5000)
         setDisplayLoggedOut(state.loggedOut);
-    }, [state.loggedOut])
+    }, [state.loggedOut, setLogoutBooleanAction])
 
     return (<>{displayLoggedOut && <LogoutPopup />}</>)
 }

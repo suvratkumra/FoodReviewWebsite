@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
-import { AuthContext, state } from '../../contexts/authContext/AuthContext'
+import { AuthContext } from '../../contexts/authContext/AuthContext'
 
 const Navbar = () => {
 
@@ -15,8 +15,7 @@ const Navbar = () => {
         if (userId !== null) {
             setUserIdFound(true);
         }
-        else
-        {
+        else {
             setUserIdFound(false);
         }
     }, [state, userId, state.userID])

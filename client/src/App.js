@@ -10,9 +10,6 @@ import Authorization from "./components/authorization/Authorization";
 import Logout from "./components/logout/Logout";
 import Profile from "./components/profile/Profile";
 import About from "./components/about/About";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "./contexts/authContext/AuthContext";
-import LogoutPopup from "./components/logout/LogoutPopup";
 import GlobalHandler from "./components/globalHandler/GlobalHandler";
 
 function App() {
@@ -21,13 +18,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <GlobalHandler/>
+        <GlobalHandler />
         <Navbar />
         <Routes>
           <Route path="/"
             element={
               // <Authorization>
-                <Home />
+              <Home />
               // </Authorization> 
             } />
           <Route path="/newList" element={<NewList />} />

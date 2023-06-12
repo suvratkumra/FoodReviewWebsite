@@ -14,11 +14,18 @@ restRouter.get("/nearby/", async (req, res) => {
     // endpoint to get the restaurants nearby.
 
     // define the query parameters
-    const { location, type, radius } = req.query;
+    const { location, radius, pageToken } = req.query;
 
     // console.log(latitude, " ", longitude, " ", type, " ", ratings, " ");
 
-    axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location}&radius=${radius}&key=${process.env.GEOLOCATION_MAPS_API_KEY}&type=${type}`)
+    axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json`, {
+        params: {
+            location: location,
+            radius: radius,
+            type: 'restaurant|cafe|bakery|bar|fast_food',
+            key: process.env.GEOLOCATION_MAPS_API_KEY,
+        }
+    })
         .then((response) => {
             const data = response.data;
             customResponse(req, res, 200, "Authorized",
