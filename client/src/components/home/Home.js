@@ -4,13 +4,17 @@ import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../contexts/authContext/AuthContext';
 import axios from 'axios';
 import { RestContext } from '../../contexts/restaurantContext/RestContext';
-// import {}
+import loadingImage from '../../images/loading-sign.png'
 
 const Home = () => {
     const { state } = useContext(AuthContext);
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
     const [error, setError] = useState(null);
+    const [radius, setRadius] = useState(200);
+    const [nextPageToken, setNextPageToken] = useState();
+    const [restaurantNames, setRestaurantNames] = useState([]);
+    const [displayLoading, setDisplayLoading] = useState(true);
     const { getRestaurantsNearbyAction } = useContext(RestContext);
 
     // useEffect to run as soon as the page is loaded to get the user location
@@ -36,9 +40,12 @@ const Home = () => {
     // another effect hook which will take care of nearby restaurants.
     useEffect(() => {
         const getRestaurants = () => {
-            getRestaurantsNearbyAction(latitude, longitude)
+            getRestaurantsNearbyAction(latitude, longitude, radius, nextPageToken)
                 .then((response) => {
-                    console.log("here " + response);
+                    // response format: array of objects specifying every restaurant within "radius" metres
+                    const names = response.map((value) => value.name);
+                    setRestaurantNames(names);
+                    setDisplayLoading(false);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -47,7 +54,7 @@ const Home = () => {
 
         getRestaurants();
 
-    }, [latitude, longitude, getRestaurantsNearbyAction])
+    }, [latitude, longitude, restaurantNames, getRestaurantsNearbyAction, nextPageToken, radius])
 
     return (
         <>
@@ -61,7 +68,12 @@ const Home = () => {
                 </button>
             </Link> */}
             <h1>Click on any restaurant to start creating your list</h1>
-            {latitude}, {longitude}
+            {displayLoading && <img src={loadingImage} alt="Loading image" />}
+            {restaurantNames?.map((value) => {
+                return (
+                    <h1 key={value}> {value} </h1>
+                )
+            })}
             {/* display the extracted restaurant here!. */}
         </>
     )

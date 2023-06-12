@@ -10,20 +10,18 @@ restRouter.get("/", async (req, res) => {
     customResponse(req, res, 200, "Approved");
 })
 
+// endpoint to get the restaurants nearby. 
 restRouter.get("/nearby/", async (req, res) => {
-    // endpoint to get the restaurants nearby.
-
     // define the query parameters
     const { location, radius, pageToken } = req.query;
-
-    // console.log(latitude, " ", longitude, " ", type, " ", ratings, " ");
 
     axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json`, {
         params: {
             location: location,
             radius: radius,
-            type: 'restaurant|cafe|bakery|bar|fast_food',
+            type: 'restaurant|cafe|bakery|bar|fast_food|meal_takeaway|meal_delivery|food',
             key: process.env.GEOLOCATION_MAPS_API_KEY,
+            // pageToken: pageToken
         }
     })
         .then((response) => {

@@ -19,13 +19,13 @@ const reducer = (state, action) => {
 const RestContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
-    const getRestaurantsNearbyAction = (latitude, longitude) => {
+    const getRestaurantsNearbyAction = (latitude, longitude, radius, pageToken) => {
         return new Promise((resolve, reject) => {
-            if (latitude && longitude) {
+            if (latitude && longitude && radius) {
                 const location = latitude + "%2C" + longitude;
-                axios.get(`http://localhost:3000/v1/restaurant/nearby?location=${location}&radius=200`)
+                axios.get(`http://localhost:3000/v1/restaurant/nearby?location=${location}&radius=${radius}&pageToken=${pageToken}`)
                     .then((response) => {
-                        resolve(JSON.stringify(response.data.response[0].dataReceived));
+                        resolve(response.data.response[0].dataReceived.results);
                     })
                     .catch((error) => {
                         reject(error);
