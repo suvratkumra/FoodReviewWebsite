@@ -13,7 +13,6 @@ const Home = () => {
     const [radius, setRadius] = useState({ actualValue: 200, tempValue: 200 });
 
     useEffect(() => {
-        setRadiusAction(radius.actualValue);
         getLocationAction().then(() => {
             // console.log("done this")
             if (state.latitude && state.longitude) {
@@ -30,7 +29,11 @@ const Home = () => {
             .catch((err) => {
                 setError(err);
             })
-    }, [state.latitude, state.longitude, radius.actualValue])
+    }, [state.latitude, state.longitude, state.radius])
+
+    useEffect(() => {
+        setRadiusAction(radius.actualValue)
+    }, [radius.actualValue])
 
     const handleRadiusOnChangeAction = (event) => {
         // console.log(event.target.value);
