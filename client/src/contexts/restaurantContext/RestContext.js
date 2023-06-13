@@ -41,7 +41,15 @@ const reducer = (state, action) => {
         case "LOCATION_EXTRACTED_FAILED": {
             return {
                 ...state,
-                error: action?.error
+                error: action?.payload
+            }
+        }
+        case "UPDATE_RADIUS": {
+            return {
+                ...state,
+                restaurants_nearby_details: [null],
+                restaurants_nearby_names: [null],
+                radius: action?.payload
             }
         }
         default: {
@@ -127,8 +135,17 @@ const RestContextProvider = ({ children }) => {
         })
     }
 
+
+    // GETTERS AND SETTERS
+    const setRadiusAction = (radius) => {
+        dispatch({
+            type: "UPDATE_RADIUS",
+            payload: radius
+        })
+    }
+
     return (
-        <RestContext.Provider value={{ state, getLocationAction, extractRestaurantNamesAction, getRestaurantsNearbyAction }}>
+        <RestContext.Provider value={{ setRadiusAction, state, getLocationAction, extractRestaurantNamesAction, getRestaurantsNearbyAction }}>
             {children}
         </RestContext.Provider>
     )
