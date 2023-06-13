@@ -6,13 +6,15 @@ export const RestContext = createContext();
 const INITIAL_STATE = {
     restaurants_nearby_names: [null],
     restaurants_nearby_details: [null],
-    location: null,
+    latitude: null,
+    longitude: null,
     radius: 200,
     pageToken: null,
     error: null,
 }
 
 const reducer = (state, action) => {
+
     switch (action.type) {
         case "RESTAURANT_DETAILS_SUCCESS": {
             return {
@@ -35,7 +37,8 @@ const reducer = (state, action) => {
         case "LOCATION_EXTRACTED_SUCCESS": {
             return {
                 ...state,
-                location: action?.payload?.latitude + "%2C" + action?.payload?.longitude
+                latitude: action?.payload?.latitude,
+                longitude: action?.payload?.longitude
             }
         }
         case "LOCATION_EXTRACTED_FAILED": {
@@ -64,18 +67,20 @@ const RestContextProvider = ({ children }) => {
 
     const getRestaurantsNearbyAction = () => {
         return new Promise((resolve, reject) => {
-            if (state.location && state.radius) {
-                axios.get(`http://localhost:3000/v1/restaurant/nearby?location=${state.location}&radius=${state.radius}&pageToken=${state.pageToken}`)
+            if (state.latitude && state.longitude && state.radius) {
+                axios.get(`http://localhost:3000/v1/restaurant/nearby?latitude=${state.latitude}&longitude=${state.longitude}&radius=${state.radius}`)
                     .then((response) => {
-                        const result = response.data.response[0].dataReceived.results
+                        const result = response.data.response[0].data
+                        console.log(result);
                         dispatch({
                             type: "RESTAURANT_DETAILS_SUCCESS",
                             payload: result
                         })
                         extractRestaurantNamesAction(result);
-                        resolve(result);
+                        resolve(response);
                     })
                     .catch((error) => {
+                        console.log(error)
                         dispatch({
                             type: "RESTAURANT_DETAILS_FAILED",
                             payload: error
@@ -90,11 +95,12 @@ const RestContextProvider = ({ children }) => {
     * To extract the names of the restaurants from the result.
     */
     const extractRestaurantNamesAction = (restDetails) => {
-        const names = restDetails.map((value) => value.name);
+        const names = restDetails?.businesses?.map((value) => value.name);
         dispatch({
             type: "EXTRACT_NAMES_SUCCESS",
             payload: names
         })
+        // console.log(names);
     }
 
     /**

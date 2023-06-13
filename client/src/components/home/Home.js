@@ -10,13 +10,14 @@ const Home = () => {
     const { setRadiusAction, state, getLocationAction, getRestaurantsNearbyAction } = useContext(RestContext);
     const [displayLoading, setDisplayLoading] = useState(true);
     const [error, setError] = useState("")
-    const [radius, setRadius] = useState(200)
+    const [radius, setRadius] = useState({ actualValue: 200, tempValue: 200 });
 
     useEffect(() => {
-        setRadiusAction(radius);
+        setRadiusAction(radius.actualValue);
         getLocationAction().then(() => {
             // console.log("done this")
-            if (state.location) {
+            if (state.latitude && state.longitude) {
+                // console.log(state.latitude, state.longitude)
                 getRestaurantsNearbyAction().then(() => {
                     console.log(displayLoading);
                     setDisplayLoading(false);
@@ -29,15 +30,21 @@ const Home = () => {
             .catch((err) => {
                 setError(err);
             })
-    }, [state.location, radius])
+    }, [state.latitude, state.longitude, radius.actualValue])
 
     const handleRadiusOnChangeAction = (event) => {
         // console.log(event.target.value);
-        setRadius(event.target.value);
+        setRadius({
+            ...radius,
+            tempValue: event.target.value
+        });
     }
 
-    const handleRadiusPointerUpAction = (event) => {
-
+    const handleUpdatedRadiusAction = (event) => {
+        setRadius({
+            ...radius,
+            actualValue: radius.tempValue
+        })
     }
 
     return (
@@ -53,8 +60,8 @@ const Home = () => {
             </Link> */}
             <h1>Click on any restaurant to start creating your list</h1>
             <p> Update the radius here for your search. </p>
-            <input type='range' id="range" min={200} max={2000} step={100} onPointerMove={handleRadiusOnChangeAction} />
-
+            <input type='range' id="range" min={200} max={2000} step={100} onChange={handleRadiusOnChangeAction} />
+            <input type='button' name="submitRadius" id="submitRadius" onClick={handleUpdatedRadiusAction} placeholder='Click to update radius' />
             {displayLoading && <img src={loadingImage} alt="Loading" />}
             {state.restaurants_nearby_names?.map((value, index) => {
                 return (
