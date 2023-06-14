@@ -1,35 +1,46 @@
 
 import { Link } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../contexts/authContext/AuthContext';
-import axios from 'axios';
 import { RestContext } from '../../contexts/restaurantContext/RestContext';
 import loadingImage from '../../images/loading-sign.png'
+import { ListContext } from '../../contexts/listContext/ListContext';
 
 const Home = () => {
     const { setRadiusAction, state, getLocationAction, getRestaurantsNearbyAction } = useContext(RestContext);
     const [displayLoading, setDisplayLoading] = useState(true);
     const [error, setError] = useState("")
     const [radius, setRadius] = useState({ actualValue: 200, tempValue: 200 });
+    const [runLocationFnAgain, setRunLocationFnAgain] = useState(true);
+
+    // LIST CONTEXT
+    const listDetails = useContext(ListContext)
+    const listState = listDetails.state;
+    const createNewListAction = listDetails.createNewListAction;
+
 
     useEffect(() => {
         getLocationAction().then(() => {
-            // console.log("done this")
+            console.log(state.latitude, state.longitude, state.radius);
             if (state.latitude && state.longitude) {
                 // console.log(state.latitude, state.longitude)
-                getRestaurantsNearbyAction().then(() => {
-                    console.log(displayLoading);
-                    setDisplayLoading(false);
-                })
-                    .catch((err) => {
-                        setError(err);
-                    });
+                locationNearbyAction();
             }
+            setRunLocationFnAgain(false);
         })
             .catch((err) => {
                 setError(err);
             })
-    }, [state.latitude, state.longitude, state.radius])
+
+
+        const locationNearbyAction = () => {
+            getRestaurantsNearbyAction().then(() => {
+                setDisplayLoading(false);
+            })
+                .catch((err) => {
+                    setError(err);
+                });
+        }
+    }, [state.radius, runLocationFnAgain])
 
     useEffect(() => {
         setRadiusAction(radius.actualValue)
@@ -50,9 +61,15 @@ const Home = () => {
         })
     }
 
+    // use the index to find the restaurant details from the object we already have in restaurant context.
+    const handleNewListButtonOnClick = (restName, restIndex) => {
+        createNewListAction(restName, restIndex);
+        window.location.href = `/new/list?restaurant=${restName}&index=${restIndex}`;
+    }
+
     return (
         <>
-            <h1>Welcome to the food review app {state?.username} </h1>
+            <h1>Welcome to the food review app </h1>
             {/* <button>
                 Continue with your list
             </button>
@@ -68,7 +85,10 @@ const Home = () => {
             {displayLoading && <img src={loadingImage} alt="Loading" />}
             {state.restaurants_nearby_names?.map((value, index) => {
                 return (
-                    <h1 key={`${value} ${index}`}> {value} </h1>
+                    <div style={{ border: "2px solid black", margin: "10px 5px", padding: "20px 5px", display: 'flex', justifyContent: 'space-around' }}>
+                        <span style={{ fontSize: "1.5rem" }} key={`${value} ${index}`}> {value} </span>
+                        <button onClick={() => handleNewListButtonOnClick(value, index)}> Create a new list </button>
+                    </div>
                 )
             })}
         </>

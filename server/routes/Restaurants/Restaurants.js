@@ -37,7 +37,7 @@ restRouter.get("/nearby/", async (req, res) => {
             customResponse(req, res, 200, "Approved", { data: response.data })
         })
         .catch(function (error) {
-            console.error(error);
+            customError(req, res, 200, "Rejected", JSON.parse(error))
         });
 })
 

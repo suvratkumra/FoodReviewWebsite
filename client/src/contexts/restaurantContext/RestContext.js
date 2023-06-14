@@ -129,7 +129,7 @@ const RestContextProvider = ({ children }) => {
                     }
                 );
             } else {
-                console.log("HERE")
+                // console.log("HERE")
                 dispatch({
                     type: "LOCATION_EXTRACTED_FAILED",
                     payload: "Geolocation is not supported by your browser"

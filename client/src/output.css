@@ -575,6 +575,10 @@ video {
   display: flex;
 }
 
+.border {
+  border-width: 1px;
+}
+
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
