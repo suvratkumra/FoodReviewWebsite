@@ -54,13 +54,22 @@ const NewList = () => {
             </div>
             <hr />
             <div id='main_container'>
-                <div id="queue_card_container">
-                    <div id="dish_image">
-                        <input type='file' id="fileUpload" name="fileUpload" multiple onChange={onImageUpload} />
-                        {dishImages.map((file) => (
-                            <img key={file.name} src={URL.createObjectURL(file)} alt={file.name} />
-                        ))}
+                <div id="queue_card_container" >
+                    <div style={{ display: 'flex' }}>
+                        <div id="dish_image">
+                            {dishImages.map((file) => (
+                                <img key={file.name} src={URL.createObjectURL(file)} alt={file.name} style={{ width: "100px", height: "100px" }} />
+                            ))}
+                        </div>
+                        <div style={{display:'flex', flexDirection: "column"}}>
+                            <label form='dishname'>Dish Name: </label>
+                            <input id='dishname' placeholder='Grilled Cheese'/>
+                            <label form='notes'>Notes: </label>
+                            <input id='notes' placeholder='notes' />
+                        </div>
+
                     </div>
+                    <input type='file' id="fileUpload" name="fileUpload" multiple onChange={onImageUpload} accept=".png, .jpg, .jpeg" />
                 </div>
             </div>
         </div >
