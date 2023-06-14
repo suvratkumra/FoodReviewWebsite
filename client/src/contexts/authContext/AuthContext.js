@@ -2,6 +2,12 @@ import { useReducer, createContext, useState } from 'react'
 import { LOGIN_SUCCESS, LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS } from './authActionConstants'
 import axios from 'axios';
 
+const USERTASKS = {
+    ACCESSING_EXISTING_LIST: "ACCESSING_EXISTING_LIST",
+    CREATE_NEW_LIST: "CREATE_NEW_LIST",
+    NOTHING: "NOTHING"
+}
+
 const INITIAL_STATE = {
     createProfileCompleted: false,
     userID: null,
@@ -10,7 +16,9 @@ const INITIAL_STATE = {
     token: null,
     loggedIn: false,
     error: { code: null, message: null },
-    loggedOut: false
+    loggedOut: false,
+    userTask: USERTASKS.NOTHING,
+    userTaskDetails: null
 }
 
 export const AuthContext = createContext();
@@ -69,6 +77,17 @@ const reducer = (state, action) => {
             return { ...state, loggedOut: action.payload.value }
         }
 
+        case "USERTASK_VARIABLE": {
+            return {
+                ...state,
+                userTask: action.payload.value,
+                userTaskDetails: {
+                    restaurantName: action.payload.restName,
+                    restaurantIndex: action.payload.restIndex
+                }
+            }
+        }
+
         default: {
             return state;
         }
@@ -91,7 +110,7 @@ const AuthContextProvider = ({ children }) => {
                 config
             );
 
-           // console.log(res?.data?.response);
+            // console.log(res?.data?.response);
 
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -149,8 +168,20 @@ const AuthContextProvider = ({ children }) => {
         });
     }
 
+    const setUserTaskAction = (value, restName = "", restIndex = "") => {
+        dispatch({
+            type: "USERTASK_VARIABLE",
+            payload: {
+                value,
+                restName,
+                restIndex
+            }
+        })
+        // console.log("suersafgsadf")
+    }
+
     return (
-        <AuthContext.Provider value={{ setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, state }}>
+        <AuthContext.Provider value={{ setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, state, setUserTaskAction, USERTASKS }}>
             {children}
         </AuthContext.Provider>
     );

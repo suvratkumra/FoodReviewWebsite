@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 // import "../../output.css"
 
 const Login = () => {
-    const { loginUserAction, state } = useContext(AuthContext);
+    const { loginUserAction, state, USERTASKS } = useContext(AuthContext);
     const [formData, setFormData] = useState({ email: "", password: "" })
     const [emailError, setEmailError] = useState("");
     const [loading, setLoadingSign] = useState(false);
@@ -18,13 +18,21 @@ const Login = () => {
         // check to see if logged in and then redirect to the home page.
         if (state.token !== null) {
             localStorage.setItem("state", JSON.stringify(state));
-            navigate('/');
+
+            // depending upon the type of request user was at, redirect accordingly.
+            if (state.userTask == USERTASKS.CREATE_NEW_LIST) {
+                const newPath = `/new/list?restaurant=${state.userTaskDetails.restaurantName}&index=${state.userTaskDetails.restaurantIndex}`;
+                navigate(newPath, { replace: true });
+            }
+            else {
+                navigate("/");
+            }
             // console.log(state);
         }
         else {
             setLoginError(true);
         }
-    }, [state, state.token, navigate]);
+    }, [state, state.token]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

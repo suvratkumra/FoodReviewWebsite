@@ -49,7 +49,11 @@ function App() {
                 <Profile />
               </Authorization>
             } />
-            <Route path="/new/list" element={<NewList/>} />
+          <Route path="/new/list" element={
+            <Authorization>
+              <NewList />
+            </Authorization>
+          } />
         </Routes>
       </BrowserRouter>
     </>

@@ -9,6 +9,7 @@ const Authorization = ({ children }) => {
 
     // stuff which needs to be taken care of whenever it is available or every second
     useEffect(() => {
+        // console.log(state, "staet")
         setTokenAvailable(state.token !== null);
     }, [state])
 
