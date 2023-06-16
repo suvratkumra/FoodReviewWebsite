@@ -20,8 +20,7 @@ const loginUserCtrl = async (req, res) => {
             // console.log(JSON.stringify(req.profileId));
             customResponse(req, res, 200, "Log in successful", user, { token });
         }
-        else
-        {
+        else {
             customError(req, res, 401, "Invalid Credentials");
         }
     } catch (err) {
@@ -35,27 +34,38 @@ const createUserCtrl = async (req, res) => {
     try {
         const { email, username, password } = req.body;
 
-        // hash the password
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(password, salt);
+        const userAvailable = await User.findOne({email});
 
-        const userProfile = await Profile.create({
-            email, 
-            username, 
-            verification: false,     // default value.
-        });
+        if(!userAvailable)
+        {
+            // hash the password
+            const salt = await bcrypt.genSalt(10);
+            const hashPassword = await bcrypt.hash(password, salt);
+    
+            const userProfile = await Profile.create({
+                email,
+                username,
+                verification: false,     // default value.
+            });
+    
+            const profileId = userProfile._id;
+    
+            const user = await User.create({
+                email,
+                username,
+                password: hashPassword,
+                profileId: profileId,
+            });
+    
+            const token = createNewToken(user);
+            customResponse(req, res, 200, "New user created with profile", user, { token });
+        }
+        else
+        {
+            customError(req, res, 401, "Rejected", {reason: "User with this email already exists"});
 
-        const profileId = userProfile._id;
-        
-        const user = await User.create({
-            email,
-            username,
-            password: hashPassword,
-            profileId: profileId,
-        });
+        }
 
-        const token = createNewToken(user);
-        customResponse(req, res, 200, "New user created with profile", user, { token });
     }
     catch (err) {
         customError(req, res, err?.code, err?.message);
@@ -87,9 +97,9 @@ const forgotPasswordCtrl = async (req, res, next) => {
 // const logoutCtrl = async (req, res) => {
 //     try {
 //         // remove all the json web token stored 
-        
+
 //     } catch (error) {
-        
+
 //     }
 // }
 

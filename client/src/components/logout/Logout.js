@@ -11,7 +11,10 @@ const Logout = () => {
   const userState = userDetails.state;
 
   useEffect(() => {
+    
+    // console.log("logout action triggered")
     profileDetails.deleteAllDetailsAction();
+
   }, [])
 
   return (
