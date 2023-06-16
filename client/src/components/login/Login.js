@@ -17,8 +17,6 @@ const Login = () => {
     useEffect(() => {
         // check to see if logged in and then redirect to the home page.
         if (state.token !== null) {
-            localStorage.setItem("state", JSON.stringify(state));
-
             // depending upon the type of request user was at, redirect accordingly.
             if (state.userTask == USERTASKS.CREATE_NEW_LIST) {
                 const newPath = `/new/list?restaurant=${state.userTaskDetails.restaurantName}&index=${state.userTaskDetails.restaurantIndex}`;
