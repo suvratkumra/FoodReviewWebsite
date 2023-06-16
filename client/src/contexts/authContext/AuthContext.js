@@ -28,6 +28,8 @@ const reducer = (state, action) => {
     switch (action.type) {
         // define the different action types here
         case LOGIN_SUCCESS: {
+            localStorage.setItem('token', action.payload[1].token);
+            localStorage.setItem('userid', action.payload[0]._id);
             return {
                 ...state,
                 userID: action.payload[0]._id,
@@ -48,6 +50,8 @@ const reducer = (state, action) => {
             }
         }
         case REGISTER_SUCCESS: {
+            localStorage.setItem('token', action.payload[1].token);
+            localStorage.setItem('userid', action.payload[0]._id);
             const newState = {
                 ...state,
                 createProfileCompleted: true,
@@ -70,6 +74,8 @@ const reducer = (state, action) => {
         }
 
         case "LOGOUT_USER": {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userid');
             return { ...INITIAL_STATE, loggedOut: true };
         }
 
