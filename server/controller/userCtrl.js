@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const authorization = require("../utils/protected");
 const createNewToken = require("../utils/createNewToken");
 const Profile = require("../model/ProfileModel");
+const nodemailer = require('nodemailer')
+const crypto = require('crypto')
 
 const loginUserCtrl = async (req, res) => {
     try {
@@ -28,47 +30,146 @@ const loginUserCtrl = async (req, res) => {
     }
 };
 
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: process.env.GMAIL_EMAIL,
+        pass: process.env.GMAIL_PASS
+    }
+})
+
+const generateVerficationCode = () => {
+    return crypto.randomInt(100000, 999999);
+}
+
+const verificationEmail = async (email, username, profileId) => {
+    try {
+        // generate verification code
+        const verificationCode = generateVerficationCode();
+
+        // send the user the verification email based on the email id
+        const mailOptions = {
+            from: process.env.GMAIL_EMAIL,
+            to: email,
+            subject: 'Account Verification',
+            html: `
+          <html>
+            <body>
+              <p>Hello ${username},</p>
+              <p>Thank you for signing up with us.</p>
+              <p>Here is the verification code you requested:</p>
+              <h2>${verificationCode}</h2>
+              <p><strong>Code will expire in 10 minutes</strong></p>
+              <p>Thank you,</p>
+              <p>Team Foodify</p>
+            </body>
+          </html>
+        `
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        const updatedProfile = await Profile.findByIdAndUpdate(
+            profileId,
+            {
+                $set: {
+                    'verification.verificationCode': verificationCode,
+                    'verification.createdAt': Date.now(),
+                    'verification.expiresAt': new Date(Date.now() + 15 * 60 * 1000),
+                    'verification.isVerified': false,
+                }
+            }
+        );
+
+        console.log(updatedProfile);
+        return true;
+    } catch (error) {
+        console.log('Error sending mail:', error);
+        return false;
+    }
+};
+
+
 // @brief: 
 // User will be created in 2 DB, One is User and One is Profile, both will be made and in future to retrieve the user, we will access the Profile DB. 
 const createUserCtrl = async (req, res) => {
     try {
         const { email, username, password } = req.body;
 
-        const userAvailable = await User.findOne({email});
+        const userAvailable = await User.findOne({ email });
 
-        if(!userAvailable)
-        {
+        if (!userAvailable) {
             // hash the password
             const salt = await bcrypt.genSalt(10);
             const hashPassword = await bcrypt.hash(password, salt);
-    
+
             const userProfile = await Profile.create({
                 email,
                 username,
-                verification: false,     // default value.
             });
-    
+
             const profileId = userProfile._id;
-    
+
             const user = await User.create({
                 email,
                 username,
                 password: hashPassword,
                 profileId: profileId,
             });
-    
+
             const token = createNewToken(user);
-            customResponse(req, res, 200, "New user created with profile", user, { token });
+
+            // we will send the verification email to the user and return whether the email was sent successfully or not as a boolean.
+            const bVerificationEmailSent = await verificationEmail(email, username, profileId);
+            customResponse(req, res, 200, "New user created with profile", user, { token }, { bVerificationEmailSent });
         }
-        else
-        {
-            customError(req, res, 401, "Rejected", {reason: "User with this email already exists"});
+        else {
+            customError(req, res, 401, "Rejected", { reason: "User with this email already exists" });
 
         }
 
     }
     catch (err) {
         customError(req, res, err?.code, err?.message);
+    }
+}
+
+const verifyUserCtrl = async (req, res) => {
+    try {
+        const { verificationCode } = req.body;
+        // check if this user entered the correct verification code
+        const userID = req.UserIdExtracted.data;
+
+        // find the profile id fo the user
+        const user = await User.findById(userID);
+        const profileId = user.profileId;
+
+        // find the profile
+        const profile = await Profile.findById(profileId);
+
+        // extract the entire object of verification from it
+        const verificationObj = profile.verification;
+
+        // check if the code is expired:
+        if (Date.now() >= verificationObj.expiresAt) {
+            customError(req, res, 401, "Rejected", { Reason: "The token has been expired." });
+        }
+
+        // check if the code is valid and correct
+        if (verificationObj.verificationCode === verificationCode) {
+            // update the profile
+            await Profile.findByIdAndUpdate(profileId, {
+                $set: {
+                    'verification.isVerified': true
+                },
+            })
+            // you have been verified
+            customResponse(req, res, 200, "Approved", { response: "You have been verified." });
+
+        }
+
+    } catch (e) {
+        customError(req, res, 401, "Rejected", { e });
     }
 }
 
@@ -118,4 +219,4 @@ const forgotPasswordCtrl = async (req, res, next) => {
 //     }
 // }
 
-module.exports = { loginUserCtrl, createUserCtrl, forgotPasswordCtrl };
+module.exports = { loginUserCtrl, verifyUserCtrl, createUserCtrl, forgotPasswordCtrl };

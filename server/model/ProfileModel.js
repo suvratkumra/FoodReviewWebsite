@@ -22,8 +22,12 @@ const userModel = new mongoose.Schema({
         ref: "List"
     },
     verification: {
-        // VERIFIED / NOT_VERIFIED
-        type: String
+        type: {
+            verificationCode: { type: Number },
+            createdAt: { type: Date },
+            expiresAt: { type: Date },
+            isVerified: { type: Boolean }
+        }
     },
     feedback: {
         type: mongoose.Schema.Types.ObjectId,
