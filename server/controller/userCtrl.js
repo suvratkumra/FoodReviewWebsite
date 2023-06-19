@@ -42,6 +42,27 @@ const generateVerficationCode = () => {
     return crypto.randomInt(100000, 999999);
 }
 
+const resendVerificationEmailCtrl = async (req, res) => {
+    try {
+        const userID = req.UserIdExtracted.data;
+
+        // get the user with this userid and extract their email and profileid
+        const user = await User.findById(userID);
+
+        const email = user.email;
+        const profileId = user.profileId;
+        const username = user.username;
+
+        const bVerificationEmailSent = await verificationEmail(email, username, profileId);
+
+        customResponse(req, res, 200, "Approved", { response: "Verification Code sent!." }, { bVerificationEmailSent });
+
+    } catch (error) {
+        customError(req, res, 401, "Rejected", { error });
+
+    }
+}
+
 const verificationEmail = async (email, username, profileId) => {
     try {
         // generate verification code
@@ -90,6 +111,55 @@ const verificationEmail = async (email, username, profileId) => {
 };
 
 
+const verifyUserCtrl = async (req, res) => {
+    try {
+        const { verificationCode } = req.body;
+        // check if this user entered the correct verification code
+        const userID = req.UserIdExtracted.data;
+
+        // find the profile id fo the user
+        const user = await User.findById(userID);
+        const profileId = user.profileId;
+
+        // find the profile
+        const profile = await Profile.findById(profileId);
+
+
+        // extract the entire object of verification from it
+        const verificationObj = profile.verification;
+
+        // console.log("verification obj ", typeof(verificationObj.verificationCode))
+        // console.log("verification code passed ", typeof(verificationCode))
+
+        // check if the code is expired:
+        if (Date.now() >= verificationObj.expiresAt) {
+            customError(req, res, 401, "Rejected", { Reason: "The token has been expired." });
+        }
+
+        // check if the code is valid and correct
+        if (verificationObj.verificationCode === +verificationCode) {
+            // update the profile
+            await Profile.findByIdAndUpdate(profileId, {
+                $set: {
+                    'verification.isVerified': true
+                },
+            })
+            // console.log("verified");
+            // you have been verified
+            customResponse(req, res, 200, "Approved", { response: "You have been verified." });
+
+        }
+        else {
+            customResponse(req, res, 400, "Rejected", { response: "Incorrect Code/Expired Code." })
+        }
+
+    } catch (e) {
+        console.log("this is it");
+        customError(req, res, 401, "Rejected", { e });
+    }
+}
+
+
 // @brief: 
 // User will be created in 2 DB, One is User and One is Profile, both will be made and in future to retrieve the user, we will access the Profile DB. 
 const createUserCtrl = async (req, res) => {
@@ -125,63 +195,16 @@ const createUserCtrl = async (req, res) => {
         }
         else {
             customError(req, res, 401, "Rejected", { reason: "User with this email already exists" });
-
+            
         }
-
+        
     }
     catch (err) {
         customError(req, res, err?.code, err?.message);
     }
 }
 
-const verifyUserCtrl = async (req, res) => {
-    try {
-        const { verificationCode } = req.body;
-        // check if this user entered the correct verification code
-        const userID = req.UserIdExtracted.data;
 
-        // find the profile id fo the user
-        const user = await User.findById(userID);
-        const profileId = user.profileId;
-
-        // find the profile
-        const profile = await Profile.findById(profileId);
-
-        
-        // extract the entire object of verification from it
-        const verificationObj = profile.verification;
-        
-        // console.log("verification obj ", typeof(verificationObj.verificationCode))
-        // console.log("verification code passed ", typeof(verificationCode))
-
-        // check if the code is expired:
-        if (Date.now() >= verificationObj.expiresAt) {
-            customError(req, res, 401, "Rejected", { Reason: "The token has been expired." });
-        }
-        
-        // check if the code is valid and correct
-        if (verificationObj.verificationCode === +verificationCode) {
-            // update the profile
-            await Profile.findByIdAndUpdate(profileId, {
-                $set: {
-                    'verification.isVerified': true
-                },
-            })
-            // console.log("verified");
-            // you have been verified
-            customResponse(req, res, 200, "Approved", { response: "You have been verified." });
-            
-        }
-        else
-        {
-            customResponse(req, res, 400, "Rejected", { response: "Incorrect Code/Expired Code."})
-        }
-        
-    } catch (e) {
-        console.log("this is it");
-        customError(req, res, 401, "Rejected", { e });
-    }
-}
 
 const forgotPasswordCtrl = async (req, res, next) => {
     try {
@@ -229,4 +252,4 @@ const forgotPasswordCtrl = async (req, res, next) => {
 //     }
 // }
 
-module.exports = { loginUserCtrl, verifyUserCtrl, createUserCtrl, forgotPasswordCtrl };
+module.exports = { resendVerificationEmailCtrl, loginUserCtrl, verifyUserCtrl, createUserCtrl, forgotPasswordCtrl };

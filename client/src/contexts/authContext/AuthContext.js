@@ -20,6 +20,7 @@ const INITIAL_STATE = {
     userTask: USERTASKS.NOTHING,
     userTaskDetails: null,
     verification: null,
+    email: null,
 }
 
 export const AuthContext = createContext();
@@ -33,6 +34,7 @@ const reducer = (state, action) => {
             localStorage.setItem('userid', action.payload[0]._id);
             return {
                 ...state,
+                email: action?.payload[0]?.email,
                 userID: action.payload[0]._id,
                 profileID: action.payload[0].profileId,
                 username: action.payload[0].username,
@@ -61,6 +63,7 @@ const reducer = (state, action) => {
                 userID: action?.payload[0]?._id,
                 profileID: action?.payload[0]?.profileId,
                 token: action?.payload[1]?.token,
+                email: action?.payload[0]?.email,
             }
             //console.log(newState);
             return newState;
@@ -150,8 +153,7 @@ const AuthContextProvider = ({ children }) => {
                         payload: res.data.response
                     })
                     if (state.createProfileCompleted)
-                    {
-                        console.log("here") ;
+                    {;
                         resolve(state);
                     }
                     // console.log(";p: ", res.data.response);
@@ -213,8 +215,29 @@ const AuthContextProvider = ({ children }) => {
         })
     }
 
+    const sendAnotherVerificationCodeAction = async () => {
+        // extract the user profile 
+        const profileId = state.profileID;
+        console.log(profileId)
+
+        const config = {
+            headers: {
+                Authorization: state.token
+            }
+        }
+        
+        axios.post('http://localhost:3000/v1/user/resend-verification-email', {}, config)
+        .then((response)=>{
+            return true;
+        })
+        .catch((error) => {
+            return false;
+        })
+
+    }
+
     return (
-        <AuthContext.Provider value={{ setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, verifyCodeAction, state, setUserTaskAction, USERTASKS }}>
+        <AuthContext.Provider value={{ sendAnotherVerificationCodeAction, setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, verifyCodeAction, state, setUserTaskAction, USERTASKS }}>
             {children}
         </AuthContext.Provider>
     );
