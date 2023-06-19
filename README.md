@@ -15,10 +15,11 @@
         npm install multer-storage-cloudinary
         npm install connect-mongo
         npm install body-parser
-        npm install nodemon  ```
+        npm install nodemon  
+        npm install nodemailer ```
      **OR**
      ```
-       npm install express jsonwebtoken dotenv express-session mongodb mongoose cloudinary multer-storage-cloudinary connect-mongo body-parser nodemon 
+       npm install express jsonwebtoken dotenv express-session mongodb mongoose cloudinary multer-storage-cloudinary connect-mongo body-parser nodemon nodemailer
      ```
       
   - Need to setup up `.env` file with variables: 
