@@ -55,7 +55,7 @@ const reducer = (state, action) => {
         case REGISTER_SUCCESS: {
             localStorage.setItem('token', action.payload[1].token);
             localStorage.setItem('userid', action.payload[0]._id);
-            localStorage.setItem('profileId', action?.payload[0]?.profileId )
+            localStorage.setItem('profileId', action?.payload[0]?.profileId)
             const newState = {
                 ...state,
                 createProfileCompleted: true,
@@ -152,8 +152,8 @@ const AuthContextProvider = ({ children }) => {
                         type: "REGISTER_SUCCESS",
                         payload: res.data.response
                     })
-                    if (state.createProfileCompleted)
-                    {;
+                    if (state.createProfileCompleted) {
+                        ;
                         resolve(state);
                     }
                     // console.log(";p: ", res.data.response);
@@ -163,7 +163,7 @@ const AuthContextProvider = ({ children }) => {
                         type: "REGISTER_FAILED",
                         payload: error
                     })
-                    reject(state);
+                    reject(error);
                 });
         })
     };
@@ -193,25 +193,25 @@ const AuthContextProvider = ({ children }) => {
         })
         // console.log("suersafgsadf")
     }
-    
+
     const verifyCodeAction = (verificationCode) => {
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             const config = {
                 headers: {
                     Authorization: state.token
                 }
             }
-    
+
             const payloadBody = {
                 verificationCode: verificationCode
             }
-    
-            axios.post('http://localhost:3000/v1/user/verify-user', payloadBody, config).then((response) =>{
+
+            axios.post('http://localhost:3000/v1/user/verify-user', payloadBody, config).then((response) => {
                 resolve();
             })
-            .catch(() => {
-                reject();
-            })
+                .catch(() => {
+                    reject();
+                })
         })
     }
 
@@ -225,14 +225,14 @@ const AuthContextProvider = ({ children }) => {
                 Authorization: state.token
             }
         }
-        
+
         axios.post('http://localhost:3000/v1/user/resend-verification-email', {}, config)
-        .then((response)=>{
-            return true;
-        })
-        .catch((error) => {
-            return false;
-        })
+            .then((response) => {
+                return true;
+            })
+            .catch((error) => {
+                return false;
+            })
 
     }
 

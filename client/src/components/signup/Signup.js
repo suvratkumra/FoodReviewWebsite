@@ -15,6 +15,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const [emailError, setEmailError] = useState("");
+    const [backendError, setBackendError] = useState("");
 
     useEffect(() => {
         if (state.createProfileCompleted) {
@@ -54,7 +55,11 @@ const Signup = () => {
             return;
         }
 
-        registerUserAction(formData).then();
+        registerUserAction(formData)
+            .then()
+            .catch((error) => {
+                setBackendError(error?.response?.data?.response[0]?.reason)
+            });
     }
     return (
         <>
@@ -65,6 +70,9 @@ const Signup = () => {
                 <input type='username' required name='username' id='username' placeholder='John.Doe' value={formData.username} onChange={handleValueChange} />
                 <input type='password' required name='password' id='password' placeholder='password' value={formData.password} onChange={handleValueChange} />
                 <button type="submit"> Sign Up! </button>
+                <div style={{ margin: "10px 0px" }}>
+                    <span style={{ color: "red" }}>{backendError}</span>
+                </div>
             </form>
 
 
