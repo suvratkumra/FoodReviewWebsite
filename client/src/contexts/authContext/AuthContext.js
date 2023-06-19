@@ -18,7 +18,8 @@ const INITIAL_STATE = {
     error: { code: null, message: null },
     loggedOut: false,
     userTask: USERTASKS.NOTHING,
-    userTaskDetails: null
+    userTaskDetails: null,
+    verification: null,
 }
 
 export const AuthContext = createContext();
@@ -52,13 +53,14 @@ const reducer = (state, action) => {
         case REGISTER_SUCCESS: {
             localStorage.setItem('token', action.payload[1].token);
             localStorage.setItem('userid', action.payload[0]._id);
+            localStorage.setItem('profileId', action?.payload[0]?.profileId )
             const newState = {
                 ...state,
                 createProfileCompleted: true,
                 username: action?.payload[0]?.username,
                 userID: action?.payload[0]?._id,
-                profileID: action?.payload[0]?.profileID,
-                token: action?.payload[1]?.token
+                profileID: action?.payload[0]?.profileId,
+                token: action?.payload[1]?.token,
             }
             //console.log(newState);
             return newState;
@@ -134,7 +136,7 @@ const AuthContextProvider = ({ children }) => {
         }
     };
 
-    const registerUserAction = async (formdata) => {
+    const registerUserAction = (formdata) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -147,7 +149,11 @@ const AuthContextProvider = ({ children }) => {
                         type: "REGISTER_SUCCESS",
                         payload: res.data.response
                     })
-                    resolve(state);
+                    if (state.createProfileCompleted)
+                    {
+                        console.log("here") ;
+                        resolve(state);
+                    }
                     // console.log(";p: ", res.data.response);
                 })
                 .catch((error) => {
@@ -185,9 +191,30 @@ const AuthContextProvider = ({ children }) => {
         })
         // console.log("suersafgsadf")
     }
+    
+    const verifyCodeAction = (verificationCode) => {
+        return new Promise((resolve, reject)=>{
+            const config = {
+                headers: {
+                    Authorization: state.token
+                }
+            }
+    
+            const payloadBody = {
+                verificationCode: verificationCode
+            }
+    
+            axios.post('http://localhost:3000/v1/user/verify-user', payloadBody, config).then((response) =>{
+                resolve();
+            })
+            .catch(() => {
+                reject();
+            })
+        })
+    }
 
     return (
-        <AuthContext.Provider value={{ setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, state, setUserTaskAction, USERTASKS }}>
+        <AuthContext.Provider value={{ setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, verifyCodeAction, state, setUserTaskAction, USERTASKS }}>
             {children}
         </AuthContext.Provider>
     );

@@ -52,7 +52,7 @@ const ProfileContextProvider = ({ children }) => {
     const details = useContext(AuthContext);
     const { deleteAllAuthAction } = useContext(AuthContext);
     const userState = details.state;
-
+    
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
     const getProfileDetailsAction = async () => {

@@ -19,11 +19,17 @@ const Profile = () => {
 
     return (
         <div>
-            {Object.entries(profileDetails).map(([key, value]) => (
-                <div key={key}>
-                    <p>{key}: {value}</p>
-                </div>
-            ))}
+            {Object.entries(profileDetails).map(([key, value]) => {
+                if (typeof value === 'object') {
+                    return null; // Skip rendering this key
+                }
+                return (
+                    <div key={key}>
+                        <p>{key}: {value}</p>
+                    </div>
+                );
+            })}
+
         </div>
     );
 }

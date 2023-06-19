@@ -11,6 +11,7 @@ import Logout from "./components/logout/Logout";
 import Profile from "./components/profile/Profile";
 import About from "./components/about/About";
 import GlobalHandler from "./components/globalHandler/GlobalHandler";
+import Verification from "./components/verify/Verification";
 
 function App() {
 
@@ -54,6 +55,7 @@ function App() {
               <NewList />
             </Authorization>
           } />
+          <Route path="/verification-page" element = {<Verification/>} />
         </Routes>
       </BrowserRouter>
     </>

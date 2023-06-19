@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../contexts/authContext/AuthContext';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Verification from '../verify/Verification';
 
 const Signup = () => {
     const { registerUserAction, state } = useContext(AuthContext);
@@ -18,7 +19,8 @@ const Signup = () => {
     useEffect(() => {
         if (state.createProfileCompleted) {
             // redirect to the login page.
-            navigate("/");
+            // navigate("/");
+            navigate("/verification-page")
         }
         //console.log(state);
     }, [state.createProfileCompleted, navigate, state])
@@ -52,7 +54,7 @@ const Signup = () => {
             return;
         }
 
-        registerUserAction(formData);
+        registerUserAction(formData).then();
     }
     return (
         <>
