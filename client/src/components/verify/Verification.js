@@ -27,7 +27,6 @@ const Verification = () => {
     const handleOnSubmitAction = async (e) => {
         e.preventDefault();
 
-        // TODO: CREATE A BANNER FOR UNVERIFIED USERS SO THAT IT REMINDS THEM TO VERIFY BEFORE THEY CAN ACCESS LISTS.
         verifyCodeAction(verificationCode)
             .then(() => {
                 setIsUserVerifiedAction(true)

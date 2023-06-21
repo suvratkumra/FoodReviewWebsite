@@ -35,7 +35,7 @@ userRouter.get("/check-user-verified", async (req, res) => {
         const profileIdObj = await User.findById(userid, { profileId: 1 });
         console.log((profileIdObj.profileId));
         const profileId = (profileIdObj.profileId);
-        const bProfile_verified = await (await Profile.findById(profileId, { verification: 1 })).verification.isVerified;
+        const bProfile_verified = (await Profile.findById(profileId, { verification: 1 })).verification.isVerified;
 
         customResponse(req, res, 200, "Approved", {
             bProfile_verified

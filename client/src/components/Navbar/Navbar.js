@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext/AuthContext';
 import { ProfileContext } from '../../contexts/profileContext/ProfileContext';
 
@@ -9,6 +9,8 @@ const Navbar = () => {
     const location = useLocation();
     const { state } = useContext(AuthContext)
     const [isProfileVerified, setIsProfileVerified] = useState(true);
+
+    const navigate = useNavigate();
 
     var token = localStorage.getItem('token');
     const userId = localStorage.getItem('userid');
@@ -51,7 +53,7 @@ const Navbar = () => {
         }
 
 
-    }, [location, token, state]);
+    }, [location]);
 
     const profileDetails = useContext(ProfileContext);
     const profileState = profileDetails.state;
@@ -68,7 +70,8 @@ const Navbar = () => {
             {!isProfileVerified && <div style={{ fontSize: "2rem", color: "Red", border: "4px black solid", borderRadius: "10px", padding: "10px 20px", display: 'flex', justifyContent: 'space-around' }}>
 
                 Verify Your Account to unlock full features of the website.
-                <button> Verify Now! </button>
+
+                <button onClick={() => { navigate('/verification-page') }}> Verify Now! </button>
 
             </div>}
             <nav>
