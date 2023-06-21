@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 
 
@@ -8,26 +9,43 @@ const Authorization = ({ children }) => {
 
     const [validToken, setValidToken] = useState(false);
 
-    const config = {
-        headers: {
-            Authorization: token
+    
+
+    useEffect(() => {
+        const config = {
+            headers: {
+                Authorization: token
+            }
         }
+        axios.post('http://localhost:3000/v1/user/verify-token', null, config)
+            .then((response) => {
+                setValidToken(true);
+                // console.log(response);
+            }).catch((error) => {
+                setValidToken(false);
+                // console.log(error.response);
+            })
+    
+    }, [])
+
+    const removeLocalStorage = () => {
+        localStorage.clear();
     }
-    // verify this token with the backend
-    axios.post('http://localhost:3000/v1/user/verify-token', null, config)
-        .then((response) => {
-            setValidToken(true);
-            // console.log(response);
-        }).catch((error) => {
-            setValidToken(false);
-            // console.log(error.response);
-        })
 
     return (
         <div>
             {!validToken ?
-                <div>You are not authorized.</div>
-                : (< div > {children} </div >)}
+                <div>You are not authorized / session expired, You can log in again
+                    <Link to="/login">
+                        <button onClick={removeLocalStorage}>
+                            Login
+                        </button>
+                    </Link>
+                </div>
+                : (
+                    < div >
+                        {children}
+                    </div >)}
         </div>
     )
 }
