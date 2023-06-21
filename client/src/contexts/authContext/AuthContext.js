@@ -19,7 +19,7 @@ const INITIAL_STATE = {
     loggedOut: false,
     userTask: USERTASKS.NOTHING,
     userTaskDetails: null,
-    verification: null,
+    isVerified: false,
     email: null,
 }
 
@@ -106,6 +106,10 @@ const reducer = (state, action) => {
 }
 const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+
+    const setIsUserVerifiedAction = (value) => {
+        state.isVerified = value;
+    }
 
     const loginUserAction = async (formdata) => {
         try {
@@ -237,7 +241,7 @@ const AuthContextProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ sendAnotherVerificationCodeAction, setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, verifyCodeAction, state, setUserTaskAction, USERTASKS }}>
+        <AuthContext.Provider value={{ setIsUserVerifiedAction, sendAnotherVerificationCodeAction, setLogoutBooleanAction, deleteAllAuthAction, registerUserAction, loginUserAction, verifyCodeAction, state, setUserTaskAction, USERTASKS }}>
             {children}
         </AuthContext.Provider>
     );

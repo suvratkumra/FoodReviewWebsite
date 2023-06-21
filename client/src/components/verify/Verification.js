@@ -7,7 +7,7 @@ import { ProfileContext } from '../../contexts/profileContext/ProfileContext'
 const Verification = () => {
     const { getProfileDetailsAction } = useContext(ProfileContext);
     const [verificationCode, setVerificationCode] = useState(0);
-    const { state, verifyCodeAction, sendAnotherVerificationCodeAction } = useContext(AuthContext);
+    const { state, setIsUserVerifiedAction, verifyCodeAction, sendAnotherVerificationCodeAction } = useContext(AuthContext);
     const [invalidCodeMessage, setInvalidCodeMessage] = useState("");
     const [anotherCodeButton, setAnotherCodeButton] = useState(true);
     const [verificationEmailSent, setVerificationEmailSent] = useState("");
@@ -19,10 +19,8 @@ const Verification = () => {
         setTimeout(() => {
             setVerficationCodeButtonEnabled(false);
             setVerificationEmailSent("")
-        }, 15000)
+        }, 5000)
 
-        setTimeout(() => {
-        })
     }, [verificationCodeButtonEnabled])
 
 
@@ -32,12 +30,15 @@ const Verification = () => {
         // TODO: CREATE A BANNER FOR UNVERIFIED USERS SO THAT IT REMINDS THEM TO VERIFY BEFORE THEY CAN ACCESS LISTS.
         verifyCodeAction(verificationCode)
             .then(() => {
+                setIsUserVerifiedAction(true)
                 // this is called when the verification code is correct. 
                 navigate('/', { replace: true })
+
             })
             .catch(() => {
                 // this is called when the verification code is incorrect. 
                 setInvalidCodeMessage("Invalid/Expired Code");
+
             });
     }
 
