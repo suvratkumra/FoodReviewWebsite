@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const authorization = require("../../utils/protected");
-const { createNewList, getAllLists, getMyListsCtrl, getMyListByIdCtrl } = require("../../controller/listCtrl");
+const { createNewList, getAllLists, getMyListsCtrl, getMyListByIdCtrl, userOptionsCtrl } = require("../../controller/listCtrl");
 
 
 const listRouter = Router();
@@ -13,5 +13,7 @@ listRouter.get("/my-lists", authorization, getMyListsCtrl)
 listRouter.get("/my-lists/:id", authorization, getMyListByIdCtrl)
 
 listRouter.post("/create", authorization, createNewList)
+
+listRouter.get("/user-options/:userOption", userOptionsCtrl)
 
 module.exports = listRouter;

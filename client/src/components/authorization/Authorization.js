@@ -17,10 +17,10 @@ const Authorization = ({ children }) => {
     axios.post('http://localhost:3000/v1/user/verify-token', null, config)
         .then((response) => {
             setValidToken(true);
-            console.log(response);
+            // console.log(response);
         }).catch((error) => {
             setValidToken(false);
-            console.log(error.response);
+            // console.log(error.response);
         })
 
     return (

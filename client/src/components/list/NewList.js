@@ -19,44 +19,10 @@ const NewList = () => {
         console.log("dish", dishImages)
     }
 
-    const getAllSpiceLevels = () => {
-        return (
-            <select>
-                <option value="nothing_selected">Nothing Selected</option>
-                <option value="bland">Bland</option>
-                <option value="mild">Mild</option>
-                <option value="medium">Medium</option>
-                <option value="hot">Hot</option>
-                <option value="spicy">Spicy</option>
-                <option value="fiery">Fiery</option>
-                <option value="zesty">Zesty</option>
-                <option value="tangy">Tangy</option>
-                <option value="peppery">Peppery</option>
-                <option value="piquant">Piquant</option>
-                <option value="flaming">Flaming</option>
-                <option value="scorching">Scorching</option>
-                <option value="inferno">Inferno</option>
-                <option value="blaze">Blaze</option>
-                <option value="nuclear">Nuclear</option>
-                <option value="volcanic">Volcanic</option>
-                <option value="scalding">Scalding</option>
-                <option value="incendiary">Incendiary</option>
-                <option value="mouth-numbing">Mouth-numbing</option>
-                <option value="explosive">Explosive</option>
-                <option value="insane">Insane</option>
-            </select>
-        )
-    }
-
     return (
         <div>
             This is the new list for restaurant: <span style={{ color: "red" }}> {queryParams.restaurantName} </span>
             <div style={{ border: "2px solid", padding: "20px", margin: "20px 5px" }}>
-                <span>SORT BY</span>
-                <div>
-                    Category:
-                    {getAllSpiceLevels()}
-                </div>
             </div>
             <hr />
             <div id='main_container'>
@@ -73,7 +39,6 @@ const NewList = () => {
                             <label htmlFor='notes'>Notes: </label>
                             <textarea style={{ width: "300px", height: "150px", }} placeholder='Notes'></textarea>
                             <label htmlFor='tags'>Tags: </label>
-                            {getAllSpiceLevels()}
                         </div>
 
                     </div>
