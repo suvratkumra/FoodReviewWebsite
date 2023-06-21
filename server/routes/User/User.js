@@ -18,4 +18,10 @@ userRouter.post('/verify-user', authorization, verifyUserCtrl)
 
 userRouter.post("/resend-verification-email", authorization, resendVerificationEmailCtrl)
 
+userRouter.post("/verify-token", authorization, async (req, res) => {
+    // if this is being sent that means the user's jsonwebtoken 
+    // is correct as Authorization handles it.
+    customResponse(req, res, 200, "Approved");
+})
+
 module.exports = userRouter;

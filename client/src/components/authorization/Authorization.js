@@ -1,34 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../contexts/authContext/AuthContext';
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import axios from 'axios';
+
 
 const Authorization = ({ children }) => {
-    // get the token from the state of the authProvider we have.
-    const { state } = useContext(AuthContext);
-    const [tokenAvailable, setTokenAvailable] = useState(false);
+    // get the token we have in the local storage
+    const token = localStorage.getItem('token');
 
-    // stuff which needs to be taken care of whenever it is available or every second
-    useEffect(() => {
-        // console.log(state, "staet")
-        setTokenAvailable(state.token !== null);
-    }, [state])
+    const [validToken, setValidToken] = useState(false);
+
+    const config = {
+        headers: {
+            Authorization: token
+        }
+    }
+    // verify this token with the backend
+    axios.post('http://localhost:3000/v1/user/verify-token', null, config)
+        .then((response) => {
+            setValidToken(true);
+            console.log(response);
+        }).catch((error) => {
+            setValidToken(false);
+            console.log(error.response);
+        })
 
     return (
         <div>
-            {tokenAvailable ?
-                (< div > {children} </div >) :
-                (<div>
-
-                    <h1>ERROR, you need to log in first.</h1>
-                    <Link to="/login"> Login </Link>
-                    <h1> New user? </h1>
-                    <Link to="/signup"> register today! </Link>
-                    <hr />
-                </div>)
-            }
+            {!validToken ?
+                <div>You are not authorized.</div>
+                : (< div > {children} </div >)}
         </div>
     )
-
 }
+
 
 export default Authorization
