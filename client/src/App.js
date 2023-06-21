@@ -7,7 +7,6 @@ import Navbar from "./components/navbar/Navbar";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Authorization from "./components/authorization/Authorization";
-import Logout from "./components/logout/Logout";
 import Profile from "./components/profile/Profile";
 import About from "./components/about/About";
 import GlobalHandler from "./components/globalHandler/GlobalHandler";
@@ -32,12 +31,7 @@ function App() {
           <Route path="/lists" element={<Lists />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/logout"
-            element={
-              <Authorization>
-                <Logout />
-              </Authorization>
-            } />
+         
           <Route path="/about"
             element={
               <Authorization>

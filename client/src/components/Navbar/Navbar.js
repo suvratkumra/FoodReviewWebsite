@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext/AuthContext';
+import { ProfileContext } from '../../contexts/profileContext/ProfileContext';
 
 const Navbar = () => {
     const [validToken, setValidToken] = useState(false);
@@ -52,6 +53,15 @@ const Navbar = () => {
 
     }, [location, token, state]);
 
+    const profileDetails = useContext(ProfileContext);
+    const profileState = profileDetails.state;
+
+    function handleLogoutAction() {
+        // delete everything from localStorage 
+        localStorage.clear();
+        window.location.reload();
+    }
+
     return (
         <div>
             {/* the banner which tells user to verify their account */}
@@ -75,7 +85,7 @@ const Navbar = () => {
                                 <Link to="/profile">Profile</Link>
                             </li>
                             <li>
-                                <Link to="/logout">Logout</Link>
+                                <a href='#' onClick={handleLogoutAction}>Logout</a>
                             </li>
                         </>
                     ) : (
