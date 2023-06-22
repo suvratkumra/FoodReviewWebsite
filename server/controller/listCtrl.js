@@ -15,10 +15,8 @@ const getAllLists = async (req, res) => {
 };
 
 const userOptionsCtrl = async (req, res) => {
-    const parameter = req.params;
-
-
     const SPICE_LEVEL = [
+        'None',
         'Mild',
         'Medium',
         'Spicy',
@@ -26,6 +24,7 @@ const userOptionsCtrl = async (req, res) => {
     ];
 
     const DISH_CUISINE_TYPE = [
+        'None',
         'American',
         'Asian',
         'Indian',
@@ -40,10 +39,11 @@ const userOptionsCtrl = async (req, res) => {
         'Greek',
         'African',
         'South American',
-        'Other (Provide an input field for users to specify if the cuisine type is not listed)',
+        'Other',
     ];
 
     const DISH_CATEGORY = [
+        'None',
         'Appetizer',
         'Soup',
         'Salad',
@@ -51,10 +51,11 @@ const userOptionsCtrl = async (req, res) => {
         'Side Dish',
         'Dessert',
         'Beverage',
-        'Other (Provide an input field for users to specify if the category is not listed)',
+        'Other',
     ];
 
     const INGREDIENTS = [
+        'None',
         'Meat',
         'Poultry',
         'Seafood',
@@ -65,10 +66,11 @@ const userOptionsCtrl = async (req, res) => {
         'Nut-Free',
         'Soy-Free',
         'Egg-Free',
-        'Other (Provide an input field for users to specify if the ingredient is not listed)',
+        'Other',
     ];
 
     const PRESENTATION = [
+        'None',
         'Plated',
         'Buffet',
         'Takeout',
@@ -76,10 +78,11 @@ const userOptionsCtrl = async (req, res) => {
         'Street Food',
         'Fine Dining',
         'Casual Dining',
-        'Other (Provide an input field for users to specify if the presentation style is not listed)',
+        'Other',
     ];
 
     const TASTE_PROFILE = [
+        'None',
         'Sweet',
         'Savory',
         'Spicy',
@@ -87,54 +90,33 @@ const userOptionsCtrl = async (req, res) => {
         'Bitter',
         'Umami',
         'Balanced',
-        'Other (Provide an input field for users to specify if the taste profile is not listed)',
+        'Other',
     ];
 
     const PORTION_SIZE = [
+        'None',
         'Small',
         'Medium',
         'Large',
     ];
 
     const PRICE_RANGE = [
+        'None',
         'Inexpensive',
         'Moderate',
         'Expensive',
     ];
-
-    switch (parameter.userOption) {
-        case 'spice_level': {
-            customResponse(req, res, 200, 'Approved', SPICE_LEVEL)
-        }
-            break;
-        case 'dish_cuisine_type': {
-            customResponse(req, res, 200, 'Approved', DISH_CUISINE_TYPE);
-        }
-            break;
-        case 'dish_category': {
-            customResponse(req, res, 200, 'Approved', DISH_CATEGORY);
-        }
-            break;
-        case 'ingredients': {
-            customResponse(req, res, 200, 'Approved', INGREDIENTS);
-        }
-            break;
-        case 'taste_profile': {
-            customResponse(req, res, 200, 'Approved', TASTE_PROFILE);
-        }
-            break;
-        case 'portion_size': {
-            customResponse(req, res, 200, 'Approved', PORTION_SIZE);
-        }
-            break;
-        case 'price_range': {
-            customResponse(req, res, 200, 'Approved', PRICE_RANGE);
-        }
-            break;
-        default: {
-            customError(req, res, 400, "Rejected");
-        }
-    }
+    // console.log("here");
+    customResponse(req, res, 200, 'Approved', {
+        SPICE_LEVEL,
+        DISH_CUISINE_TYPE,
+        DISH_CATEGORY,
+        INGREDIENTS,
+        PRESENTATION,
+        TASTE_PROFILE,
+        PORTION_SIZE,
+        PRICE_RANGE
+    });
 }
 
 const createNewList = async (req, res) => {

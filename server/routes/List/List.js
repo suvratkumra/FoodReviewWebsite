@@ -14,6 +14,6 @@ listRouter.get("/my-lists/:id", authorization, getMyListByIdCtrl)
 
 listRouter.post("/create", authorization, createNewList)
 
-listRouter.get("/user-options/:userOption", userOptionsCtrl)
+listRouter.get("/user-options", userOptionsCtrl)
 
 module.exports = listRouter;
