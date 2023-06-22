@@ -42,10 +42,8 @@ const NewList = () => {
         }));
     }
 
-    return (
-        <div>
-            This is the new list for restaurant: <span style={{ color: "red" }}> {queryParams.restaurantName} </span>
-            <h2>Filter</h2>
+    const filters = () => {
+        return (
             <div style={{ border: "2px solid", padding: "20px", margin: "20px 5px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                 <div style={{ display: "flex", flexDirection: "column", maxWidth: "10%" }}>
                     <label htmlFor='spice_level_select'>Spice Level</label>
@@ -107,6 +105,14 @@ const NewList = () => {
                     Apply filters
                 </button>
             </div>
+        )
+    }
+
+    return (
+        <div>
+            This is the new list for restaurant: <span style={{ color: "red" }}> {queryParams.restaurantName} </span>
+            <h2>Filter</h2>
+            {filters()}
             <hr />
             <div id='main_container'>
                 <div id="queue_card_container" style={{ width: "50%" }}>
