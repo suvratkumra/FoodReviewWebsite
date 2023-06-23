@@ -10,6 +10,7 @@ const NewList = () => {
     const [userOptions, setUserOptions] = useState();
     const [filtersApplied, setFiltersApplied] = useState();
     const [tempFiltersApplied, setTempFiltersApplied] = useState();
+    const [formCount, setFormCount] = useState(1);
 
     const queryParams = {
         restaurantName: queryDetails.get('restaurant'),
@@ -112,6 +113,42 @@ const NewList = () => {
 
     }
 
+    const handleAddingDishForm = () => {
+        const forms = [];
+        for (let i = 0; i < formCount; i++) {
+            forms.push(
+                <div style={{ border: "2px red dotted", margin: "1%", padding: "1%" }}>
+                    <form onSubmit={handleOnSubmitForm} >
+                        <div id='main_container'>
+                            <div id="queue_card_container" style={{ width: "100%" }}>
+                                <div style={{ display: 'flex' }}>
+                                    <div id="dish_image" >
+                                        {dishImages.map((file) => (
+                                            <img key={file.name} src={URL.createObjectURL(file)} alt={file.name} style={{ width: "100px", height: "100px", padding: "2%" }} />
+                                        ))}
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: "column" }}>
+                                        <label htmlFor='dishname'>Dish Name: </label>
+                                        <input id='dishname' placeholder='Grilled Cheese' />
+                                        <label htmlFor='notes'>Notes: </label>
+                                        <textarea style={{ width: "300px", height: "150px", }} placeholder='Notes'></textarea>
+                                        <label htmlFor='tags'>Tags: </label>
+                                    </div>
+                                </div>
+                                {filters()}
+                                <input type='file' id="fileUpload" name="fileUpload" multiple onChange={onImageUpload} accept=".png, .jpg, .jpeg" />
+                                <button type='submit'>Submit Review</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>)
+
+        }
+        console.log("form", forms);
+        return forms;
+    }
+
     return (
         <div>
             This is the new list for restaurant: <span style={{ color: "red" }}> {queryParams.restaurantName} </span>
@@ -119,32 +156,13 @@ const NewList = () => {
             {filters()}
             <hr />
             <button onClick={() => {
-                document.createElement("buttonclicked");
-                document.getElementsByTagName("buttonclicked").item().innerHTML = "hello"
-            }}> </button>
-            <form onSubmit={handleOnSubmitForm}>
-                <div id='main_container'>
-                    <div id="queue_card_container" style={{ width: "30%" }}>
-                        <div style={{ display: 'flex' }}>
-                            <div id="dish_image" >
-                                {dishImages.map((file) => (
-                                    <img key={file.name} src={URL.createObjectURL(file)} alt={file.name} style={{ width: "100px", height: "100px", padding: "2%" }} />
-                                ))}
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: "column" }}>
-                                <label htmlFor='dishname'>Dish Name: </label>
-                                <input id='dishname' placeholder='Grilled Cheese' />
-                                <label htmlFor='notes'>Notes: </label>
-                                <textarea style={{ width: "300px", height: "150px", }} placeholder='Notes'></textarea>
-                                <label htmlFor='tags'>Tags: </label>
-                            </div>
-                        </div>
-                        {filters()}
-                        <input type='file' id="fileUpload" name="fileUpload" multiple onChange={onImageUpload} accept=".png, .jpg, .jpeg" />
-                    </div>
-                </div>
+                setFormCount(formCount + 1);
+            }}> Add more dishes </button>
+            <div style={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap' }}>
+                {handleAddingDishForm()}
 
-            </form>
+            </div>
+
         </div >
 
     )
