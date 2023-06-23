@@ -108,32 +108,43 @@ const NewList = () => {
         )
     }
 
+    const handleOnSubmitForm = () => {
+
+    }
+
     return (
         <div>
             This is the new list for restaurant: <span style={{ color: "red" }}> {queryParams.restaurantName} </span>
             <h2>Filter</h2>
             {filters()}
             <hr />
-            <div id='main_container'>
-                <div id="queue_card_container" style={{ width: "50%" }}>
-                    <div style={{ display: 'flex' }}>
-                        <div id="dish_image" >
-                            {dishImages.map((file) => (
-                                <img key={file.name} src={URL.createObjectURL(file)} alt={file.name} style={{ width: "100px", height: "100px", padding: "2%" }} />
-                            ))}
+            <button onClick={() => {
+                document.createElement("buttonclicked");
+                document.getElementsByTagName("buttonclicked").item().innerHTML = "hello"
+            }}> </button>
+            <form onSubmit={handleOnSubmitForm}>
+                <div id='main_container'>
+                    <div id="queue_card_container" style={{ width: "30%" }}>
+                        <div style={{ display: 'flex' }}>
+                            <div id="dish_image" >
+                                {dishImages.map((file) => (
+                                    <img key={file.name} src={URL.createObjectURL(file)} alt={file.name} style={{ width: "100px", height: "100px", padding: "2%" }} />
+                                ))}
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: "column" }}>
+                                <label htmlFor='dishname'>Dish Name: </label>
+                                <input id='dishname' placeholder='Grilled Cheese' />
+                                <label htmlFor='notes'>Notes: </label>
+                                <textarea style={{ width: "300px", height: "150px", }} placeholder='Notes'></textarea>
+                                <label htmlFor='tags'>Tags: </label>
+                            </div>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: "column" }}>
-                            <label htmlFor='dishname'>Dish Name: </label>
-                            <input id='dishname' placeholder='Grilled Cheese' />
-                            <label htmlFor='notes'>Notes: </label>
-                            <textarea style={{ width: "300px", height: "150px", }} placeholder='Notes'></textarea>
-                            <label htmlFor='tags'>Tags: </label>
-                        </div>
-
+                        {filters()}
+                        <input type='file' id="fileUpload" name="fileUpload" multiple onChange={onImageUpload} accept=".png, .jpg, .jpeg" />
                     </div>
-                    <input type='file' id="fileUpload" name="fileUpload" multiple onChange={onImageUpload} accept=".png, .jpg, .jpeg" />
                 </div>
-            </div>
+
+            </form>
         </div >
 
     )
