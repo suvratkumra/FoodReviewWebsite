@@ -17,12 +17,12 @@ const NewList = () => {
             description: "",
             userOptionList:
             {
-                spice_level: null,
-                dish_cuisine_type: null,
-                dish_category: null,
-                portion_size: null,
-                price_range: null,
-                taste_profile: null
+                spice_level: "none",
+                dish_cuisine_type: "none",
+                dish_category: "none",
+                portion_size: "none",
+                price_range: "none",
+                taste_profile: "none"
             },
             dishImageInformation: []
 
@@ -156,7 +156,12 @@ const NewList = () => {
         formData.append('restaurantName', queryParams.restaurantName);
         formData.append('dish[dishName]', formDataList[formIndex].dishName);
         formData.append('dish[description]', formDataList[formIndex].description);
-        formData.append('dish[userOptionList]', (formDataList[formIndex].userOptionList));
+        formData.append('dish[userOptionList][spice_level]', (formDataList[formIndex].userOptionList.spice_level));
+        formData.append('dish[userOptionList][dish_cuisine_type]', (formDataList[formIndex].userOptionList.dish_cuisine_type));
+        formData.append('dish[userOptionList][dish_category]', (formDataList[formIndex].userOptionList.dish_category));
+        formData.append('dish[userOptionList][portion_size]', (formDataList[formIndex].userOptionList.portion_size));
+        formData.append('dish[userOptionList][price_range]', (formDataList[formIndex].userOptionList.price_range));
+        formData.append('dish[userOptionList][taste_profile]', (formDataList[formIndex].userOptionList.taste_profile));
 
         formDataList[formIndex]?.dishImageInformation.forEach((file, index) => {
             formData.append('file', file);
@@ -234,12 +239,12 @@ const NewList = () => {
                         description: "",
                         userOptionList:
                         {
-                            spice_level: null,
-                            dish_cuisine_type: null,
-                            dish_category: null,
-                            portion_size: null,
-                            price_range: null,
-                            taste_profile: null
+                            spice_level: "none",
+                            dish_cuisine_type: "none",
+                            dish_category: "none",
+                            portion_size: "none",
+                            price_range: "none",
+                            taste_profile: "none"
                         },
                         dishImageInformation: [],
                     }])

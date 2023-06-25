@@ -136,7 +136,7 @@ const createNewList = async (req, res) => {
         const newDish = {
             dishName: dish.dishName,
             description: dish.description,
-            userOptionList: dish.userOptionList,
+            userOptions: dish.userOptionList,
             photo: filePath
         }
 
