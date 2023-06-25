@@ -12,7 +12,7 @@ listRouter.get("/my-lists", authorization, getMyListsCtrl)
 
 listRouter.get("/my-lists/:id", authorization, getMyListByIdCtrl)
 
-listRouter.post("/create", authorization, parser.single('file'), createNewList)
+listRouter.post("/create", authorization, parser.array('file'), createNewList)
 
 listRouter.get("/user-options", userOptionsCtrl)
 

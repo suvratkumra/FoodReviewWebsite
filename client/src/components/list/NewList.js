@@ -152,17 +152,15 @@ const NewList = () => {
             }
         }
 
-        const formData = {
-            restaurantName: queryParams.restaurantName,
-            dish: {
-                dishName: formDataList[formIndex].dishName,
-                description: formDataList[formIndex].description,
-                userOptionList: formDataList[formIndex].userOptionList
-            },
-            file: formDataList[formIndex].dishImageInformation[0]
-        }
+        const formData = new FormData();
+        formData.append('restaurantName', queryParams.restaurantName);
+        formData.append('dish[dishName]', formDataList[formIndex].dishName);
+        formData.append('dish[description]', formDataList[formIndex].description);
+        formData.append('dish[userOptionList]', (formDataList[formIndex].userOptionList));
 
-        console.log("file infomration", formDataList[formIndex].dishImageInformation[0])
+        formDataList[formIndex]?.dishImageInformation.forEach((file, index) => {
+            formData.append('file', file);
+        });
 
         axios.post("http://localhost:3000/v1/list/create", formData, config)
             .then((response) => {

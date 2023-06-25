@@ -123,11 +123,15 @@ const userOptionsCtrl = async (req, res) => {
 const createNewList = async (req, res) => {
     try {
         // console.log("vioytd", req.body);
-        // console.log("files", req.file);
+        // console.log("files", req.files);
 
         // get the bare minimum for it from the body
         const { restaurantName, dish } = req.body;
-        const filePath = req.file.path;
+        const filePath = req.files.map((file) =>
+            file.path
+        );
+
+        // console.log(filePath)
 
         const newDish = {
             dishName: dish.dishName,
