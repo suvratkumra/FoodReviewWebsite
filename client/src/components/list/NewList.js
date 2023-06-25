@@ -11,6 +11,8 @@ const NewList = () => {
     const [filtersApplied, setFiltersApplied] = useState();
     const [tempFiltersApplied, setTempFiltersApplied] = useState();
     const [formCount, setFormCount] = useState(1);
+    const [editDishes, setEditDishes] = useState([null]);
+    const [existingDishes, setExistingDishes] = useState();
     const [formDataList, setFormDataList] = useState([
         {
             dishName: "",
@@ -40,9 +42,25 @@ const NewList = () => {
                 // console.log(userOptions);
             })
             .catch((err) => {
-                // TODO: error handling. 
-
+                // TODO: Make error handler. 
+                alert("Server Error.")
             });
+
+        axios.get("http://localhost:3000/v1/list/my-lists", {
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            }
+        }).then((response) => {
+            // existing dishes.
+            response.data.response[0].filter((restaurant) => {
+                if (restaurant.restaurantName === queryParams.restaurantName) {
+                    setExistingDishes(restaurant.dishes);
+                }
+            })
+        }).catch((error) => {
+            // TODO: handle error
+            console.log(error);
+        })
     }, []);
 
     const onImageUpload = (event, index) => {
@@ -134,9 +152,9 @@ const NewList = () => {
                         })}
                     </select>
                 </div>
-                <button onClick={() => setFiltersApplied(tempFiltersApplied)}>
+                {(i === -1 && <button onClick={() => setFiltersApplied(tempFiltersApplied)}>
                     Apply filters
-                </button>
+                </button>)}
             </div>
         )
     }
@@ -218,10 +236,12 @@ const NewList = () => {
 
                     </form>
                 </div>)
-
         }
-        // console.log("form", forms);
         return forms;
+    }
+
+    const handleEditingExistingDishes = (dish) => {
+        console.log(dish);
     }
 
     return (
@@ -230,6 +250,28 @@ const NewList = () => {
             <h2>Filter</h2>
             {filters(-1)}
             <hr />
+            {/* existing dishes */}
+            {
+
+                existingDishes?.map(dish => {
+
+                    return (<div style={{ border: 'red 2px solid', borderRadius: '20px', padding: "10px 20px", margin: "10px 20px", maxWidth: "50%" }}>
+                        <div>
+                            DishName: {dish.dishName},
+                        </div>
+                        <div>
+                            Description: {dish.description},
+                        </div>
+                        <div>
+                            {dish.photo.length !== 0 && <span>Dish Images:</span>}
+                            {dish.photo.map((photo) => {
+                                return (<img src={photo} alt='dishPhoto' style={{ width: "100px", height: "100px", padding: "2%" }} />)
+                            })}
+                        </div>
+                        {/* <button onClick={() => setEditDishes({ id: dish._id, edit: true })}> Edit </button> */}
+                    </div>)
+                })
+            }
             <button onClick={() => {
                 setFormCount(formCount + 1);
                 setFormDataList((prevValue) => [

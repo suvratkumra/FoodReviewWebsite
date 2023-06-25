@@ -122,16 +122,11 @@ const userOptionsCtrl = async (req, res) => {
 
 const createNewList = async (req, res) => {
     try {
-        // console.log("vioytd", req.body);
-        // console.log("files", req.files);
-
         // get the bare minimum for it from the body
         const { restaurantName, dish } = req.body;
         const filePath = req.files.map((file) =>
             file.path
         );
-
-        // console.log(filePath)
 
         const newDish = {
             dishName: dish.dishName,
@@ -140,14 +135,11 @@ const createNewList = async (req, res) => {
             photo: filePath
         }
 
-        console.log(newDish)
-
         const userId = req.UserIdExtracted.data;
 
         // get all the user lists
         const user = await User.findById(userId);
         const userProfile = user.profileId;
-        // console.log(userProfile);
 
         // get all the lists user created
         const userLists = await List.find({ userId: userId });
@@ -194,9 +186,9 @@ const getMyListsCtrl = async (req, res) => {
         const userId = req.UserIdExtracted.data;
 
         // get just the restaurant names
-        const lists = await List.find({ userId: userId }, { restaurantName: true });
+        const lists = await List.find({ userId: userId });
 
-        customResponse(req, res, 200, "Lists extracted", { lists });
+        customResponse(req, res, 200, "Lists extracted", lists);
     } catch (e) {
         customError(req, res, e?.status, e?.message);
     }
