@@ -8,9 +8,9 @@ const listModel = new mongoose.Schema({
     dishes: [{
         type: {
             dishName: { type: String, required: true },
-            dishType: { type: String },
-            photo: { type: String },
-            ratings: { type: Number, required: true },
+            // dishType: { type: String },
+            photo: { type: [String] },  // whatever is uploaded to cloudinary. 
+            userOptions: { type: Object },
             description: { type: String }
         },
         required: true

@@ -143,7 +143,34 @@ const NewList = () => {
 
     const handleOnSubmitForm = (event, formIndex) => {
         event.preventDefault();
-        console.log("form submitted: ", formIndex)
+        console.log("form submitted: ", formDataList, localStorage.getItem('token'));
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': localStorage.getItem('token'),
+            }
+        }
+
+        const formData = {
+            restaurantName: queryParams.restaurantName,
+            dish: {
+                dishName: formDataList[formIndex].dishName,
+                description: formDataList[formIndex].description,
+                userOptionList: formDataList[formIndex].userOptionList
+            },
+            file: formDataList[formIndex].dishImageInformation[0]
+        }
+
+        console.log("file infomration", formDataList[formIndex].dishImageInformation[0])
+
+        axios.post("http://localhost:3000/v1/list/create", formData, config)
+            .then((response) => {
+                console.log("response", response);
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
     }
 
     const handleChangingFormDataInput = (event, index) => {
@@ -216,7 +243,7 @@ const NewList = () => {
                             price_range: null,
                             taste_profile: null
                         },
-                        dishImageInformation: []
+                        dishImageInformation: [],
                     }])
             }}> Add more dishes </button>
             <div style={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap' }}>

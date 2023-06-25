@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const authorization = require("../../utils/protected");
 const { createNewList, getAllLists, getMyListsCtrl, getMyListByIdCtrl, userOptionsCtrl } = require("../../controller/listCtrl");
-
+const parser = require('../../utils/cloudinaryConnect.js');
 
 const listRouter = Router();
 
@@ -12,7 +12,7 @@ listRouter.get("/my-lists", authorization, getMyListsCtrl)
 
 listRouter.get("/my-lists/:id", authorization, getMyListByIdCtrl)
 
-listRouter.post("/create", authorization, createNewList)
+listRouter.post("/create", authorization, parser.single('file'), createNewList)
 
 listRouter.get("/user-options", userOptionsCtrl)
 

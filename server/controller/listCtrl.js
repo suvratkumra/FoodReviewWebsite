@@ -1,4 +1,5 @@
 const List = require("../model/ListModel");
+const Profile = require("../model/ProfileModel");
 const User = require("../model/UserModel");
 const customError = require("../utils/errorTemplate");
 const customResponse = require("../utils/responseTemplate");
@@ -120,22 +121,62 @@ const userOptionsCtrl = async (req, res) => {
 }
 
 const createNewList = async (req, res) => {
-
     try {
+        // console.log("vioytd", req.body);
+        // console.log("files", req.file);
+
         // get the bare minimum for it from the body
-        const { restaurantName, dishes } = req.body;
+        const { restaurantName, dish } = req.body;
+        const filePath = req.file.path;
 
-        const userId = req.UserIdExtracted.data;
-        const list = await List.create({ restaurantName, dishes, userId: userId });
-
-        if (list) {
-            // update the user as well
-            const user = await User.findByIdAndUpdate(userId, {
-                $push: { lists: list }
-            }, { new: true });
+        const newDish = {
+            dishName: dish.dishName,
+            description: dish.description,
+            userOptionList: dish.userOptionList,
+            photo: filePath
         }
 
-        customResponse(req, res, 200, "Created new List", { list });
+        console.log(newDish)
+
+        const userId = req.UserIdExtracted.data;
+
+        // get all the user lists
+        const user = await User.findById(userId);
+        const userProfile = user.profileId;
+        // console.log(userProfile);
+
+        // get all the lists user created
+        const userLists = await List.find({ userId: userId });
+
+        var existingRestFound = false;
+
+        // now map over the lists to find out if there is existing list for the restaurant available.
+        userLists.forEach(async (list) => {
+            if (list.restaurantName === restaurantName) {
+                const existingDishes = list.dishes;
+
+                existingDishes.push(newDish);
+
+                existingRestFound = true;
+
+                // update the list. 
+                await List.updateOne({ _id: list._id }, { dishes: existingDishes });
+            }
+        });
+
+        if (!existingRestFound) {
+            const list = await List.create({ restaurantName, newDish, userId: userId });
+
+            if (list) {
+                // update the user as well
+                const profile = await Profile.findByIdAndUpdate(userProfile, {
+                    $push: { lists: list }
+                }, { new: true });
+            }
+        }
+        const message = existingRestFound ? "Appended the old list" : "Created a new list"
+        customResponse(req, res, 200, "Approved", message);
+
     } catch (err) {
         customError(req, res, err?.code, err?.message);
     }
