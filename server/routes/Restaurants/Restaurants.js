@@ -41,4 +41,26 @@ restRouter.get("/nearby/", async (req, res) => {
         });
 })
 
+restRouter.get("/search/:id", async (req, res) => {
+    const options = {
+        params: {
+            location: 'Toronto',
+            term: req.params.id,
+            sort_by: 'best_match',
+            limit: '20'
+        },
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + process.env.YELP_API_KEY
+        }
+    };
+
+    axios.get('https://api.yelp.com/v3/businesses/search', options)
+        .then((response) => {
+            console.log(response);
+            customResponse(req, res, 200, "Approved", {data: response.data})
+        })
+        .catch((error) => { console.log("error", error) })
+})
+
 module.exports = restRouter;

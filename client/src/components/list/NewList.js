@@ -245,7 +245,6 @@ const NewList = () => {
     }
 
     const handleDisplayingExistingDishTags = (dish) => {
-        console.log(dish)
         const userOptionListArray = Object.entries(dish.userOptions);
 
         return (

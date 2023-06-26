@@ -103,6 +103,28 @@ const RestContextProvider = ({ children }) => {
         // console.log(names);
     }
 
+    const searchRestaurantAction = (name) => {
+        return new Promise((resolve, reject) => {
+            axios.get(`http://localhost:3000/v1/restaurant/search/${name}`)
+                .then((response) => {
+                    const result = response.data.response[0].data
+                    dispatch({
+                        type: "RESTAURANT_DETAILS_SUCCESS",
+                        payload: result
+                    })
+                    extractRestaurantNamesAction(result);
+                    resolve(response);
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: "RESTAURANT_DETAILS_FAILED",
+                        payload: error
+                    })
+                    reject(error);
+                })
+        })
+    }
+
     /**
      * Extract the location of the user
      * */
@@ -151,7 +173,7 @@ const RestContextProvider = ({ children }) => {
     }
 
     return (
-        <RestContext.Provider value={{ setRadiusAction, state, getLocationAction, extractRestaurantNamesAction, getRestaurantsNearbyAction }}>
+        <RestContext.Provider value={{ searchRestaurantAction, setRadiusAction, state, getLocationAction, extractRestaurantNamesAction, getRestaurantsNearbyAction }}>
             {children}
         </RestContext.Provider>
     )
