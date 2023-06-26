@@ -244,6 +244,58 @@ const NewList = () => {
         console.log(dish);
     }
 
+    const handleDisplayingExistingDishTags = (dish) => {
+        console.log(dish)
+        const userOptionListArray = Object.entries(dish.userOptions);
+
+        return (
+            <div>
+                {
+                    userOptionListArray[0][0] === 'spice_level' && 
+                    <div>
+                        <span>Spice Level: </span>
+                        <span>{userOptionListArray[0][1]}</span>
+                    </div>
+                }
+                {
+                    userOptionListArray[1][0] === 'dish_cuisine_type' &&
+                    <div>
+                            <span>Dish Cuisine Type: </span>
+                        <span>{userOptionListArray[1][1]}</span>
+                    </div>
+                }
+                {
+                    userOptionListArray[2][0] === 'dish_category' &&
+                    <div>
+                        <span>Dish Category: </span>
+                        <span>{userOptionListArray[2][1]}</span>
+                    </div>
+                }
+                {
+                    userOptionListArray[3][0] === 'portion_size' &&
+                    <div>
+                        <span>Portion Size: </span>
+                        <span>{userOptionListArray[3][1]}</span>
+                    </div>
+                }
+                {
+                    userOptionListArray[4][0] === 'price_range' &&
+                    <div>
+                        <span>Price Range: </span>
+                        <span>{userOptionListArray[4][1]}</span>
+                    </div>
+                }
+                {
+                    userOptionListArray[5][0] === 'taste_profile' &&
+                    <div>
+                        <span>Taste Profile: </span>
+                        <span>{userOptionListArray[5][1]}</span>
+                    </div>
+                }
+            </div>
+        )
+    }
+
     return (
         <div>
             This is the new list for restaurant: <span style={{ color: "red" }}> {queryParams.restaurantName} </span>
@@ -261,6 +313,10 @@ const NewList = () => {
                         </div>
                         <div>
                             Description: {dish.description},
+                        </div>
+                        <div>
+                            Tags:
+                            {handleDisplayingExistingDishTags(dish)}
                         </div>
                         <div>
                             {dish.photo.length !== 0 && <span>Dish Images:</span>}
