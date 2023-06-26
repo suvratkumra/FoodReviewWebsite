@@ -11,12 +11,11 @@ import Profile from "./components/profile/Profile";
 import About from "./components/about/About";
 import GlobalHandler from "./components/globalHandler/GlobalHandler";
 import Verification from "./components/verify/Verification";
+import './output.css'
 
 function App() {
-
-
   return (
-    <>
+    <div className="bg-gray-50">
       <BrowserRouter>
         <GlobalHandler />
         <Navbar />
@@ -31,7 +30,7 @@ function App() {
           <Route path="/lists" element={<Lists />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-         
+
           <Route path="/about"
             element={
               <Authorization>
@@ -49,10 +48,10 @@ function App() {
               <NewList />
             </Authorization>
           } />
-          <Route path="/verification-page" element = {<Verification/>} />
+          <Route path="/verification-page" element={<Verification />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

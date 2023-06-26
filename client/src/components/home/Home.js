@@ -5,7 +5,6 @@ import { RestContext } from '../../contexts/restaurantContext/RestContext';
 import loadingImage from '../../images/loading-sign.png'
 import { ListContext } from '../../contexts/listContext/ListContext';
 import { AuthContext } from '../../contexts/authContext/AuthContext';
-import axios from 'axios';
 
 const Home = () => {
     const { setRadiusAction, state, getLocationAction, searchRestaurantAction, getRestaurantsNearbyAction, } = useContext(RestContext);
@@ -73,20 +72,30 @@ const Home = () => {
 
 
     const handleSearchSubmitting = () => {
-        searchRestaurantAction(searchBarInput)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        if (searchBarInput !== "") {
+            searchRestaurantAction(searchBarInput)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        else {
+            getRestaurantsNearbyAction().then(() => {
+                setDisplayLoading(false);
+            })
+                .catch((err) => {
+                    setError(err);
+                });
+        }
     }
 
     return (
         <>
             <h1>Welcome to the food review app </h1>
             <label htmlFor='search-bar'>Search: </label>
-            <input type='search' id='search' onChange={(event)=>setSearchBarInput(event.target.value)}></input>
+            <input type='search' id='search' onChange={(event) => setSearchBarInput(event.target.value)}></input>
             <button onClick={handleSearchSubmitting}> Search </button>
 
             <h1>Click on any restaurant to start creating your list</h1>

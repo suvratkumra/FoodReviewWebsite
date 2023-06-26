@@ -67,43 +67,44 @@ const Navbar = () => {
     return (
         <div>
             {/* the banner which tells user to verify their account */}
-            {!isProfileVerified && <div style={{ fontSize: "2rem", color: "Red", border: "4px black solid", borderRadius: "10px", padding: "10px 20px", display: 'flex', justifyContent: 'space-around' }}>
+            {!isProfileVerified && <div>
 
                 Verify Your Account to unlock full features of the website.
 
                 <button onClick={() => { navigate('/verification-page') }}> Verify Now! </button>
 
             </div>}
-            <nav>
-                <ul>
+            <div className='font-bold bg-gray-200 text-gray-700 p-2 m-0'>
+                <ul className='flex flex-row justify-around text-2xl items-center p-3'>
                     <li>
-                        <Link to="/">Home</Link>
+                        <Link className='relative inline-block text-gray-600 hover:text-gray-800 duration-300 transition-all ease-in-out hover:underline ' to="/">Home</Link>
+
                     </li>
                     <li>
-                        <Link to="/about">About</Link>
+                        <Link className='relative inline-block text-gray-600 hover:text-gray-800 duration-300 transition-all ease-in-out hover:underline ' to="/about">About</Link>
                     </li>
                     {validToken ? (
                         <>
                             <li>
-                                <Link to="/profile">Profile</Link>
+                                <Link to="/profile" className='relative inline-block text-gray-600 hover:text-gray-800 duration-300 transition-all ease-in-out hover:underline '>Profile</Link>
                             </li>
                             <li>
-                                <a href='#' onClick={handleLogoutAction}>Logout</a>
+                                <a href='#' className='relative inline-block text-gray-600 hover:text-gray-800 duration-300 transition-all ease-in-out hover:underline ' onClick={handleLogoutAction}>Logout</a>
                             </li>
                         </>
                     ) : (
                         <>
-                            <li>
-                                <Link to="/signup">Sign Up</Link>
-                            </li>
-                            <li>
+                            <li className='bg-green-400 rounded-lg p-2 hover:bg-green-500 hover:text-black ease-in-out border-2 border-green-500 hover:border-green-600 hover:cursor-pointer'>
                                 <Link to="/login">Login</Link>
+                            </li>
+                            <li className='bg-orange-400 rounded-lg p-2 hover:bg-orange-500 hover:text-black ease-in-out border-2 border-orange-500 hover:border-orange-600 hover:cursor-pointer'>
+                                <Link to="/signup">Sign Up</Link>
                             </li>
                         </>
                     )}
                 </ul>
-            </nav>
-        </div>
+            </div>
+        </div >
     );
 };
 
