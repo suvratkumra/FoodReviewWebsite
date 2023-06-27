@@ -12,6 +12,7 @@ const NewList = () => {
     const [tempFiltersApplied, setTempFiltersApplied] = useState();
     const [formCount, setFormCount] = useState(1);
     const [editDishes, setEditDishes] = useState([null]);
+    const [reviewSubmitted, setReviewSubmitted] = useState();
     const [existingDishes, setExistingDishes] = useState();
     const [formDataList, setFormDataList] = useState([
         {
@@ -103,7 +104,7 @@ const NewList = () => {
 
     const filters = (i) => {
         return (
-            <div className="border-gray-300 border-t-2 border-b-2 py-1 mb-4 flex flex-col flex-wrap">
+            <div className="border-green-300 border-t-2 border-b-2 py-1 mb-4 flex flex-col flex-wrap">
                 <div className='md:grid md:grid-cols-3 lg:grid lg:grid-cols-2 justify-between m-4'>
                     <div className="flex flex-col lg:w-1/2 mx-2">
 
@@ -112,7 +113,7 @@ const NewList = () => {
                             name="spice_level_select"
                             id="spice_level"
                             onChange={(event) => handleOnChangeFilters(event, i)}
-                            className="border border-gray-300 rounded-lg p-2"
+                            className="border border-green-300 rounded-lg p-2"
                         >
                             {userOptions?.SPICE_LEVEL.map((value) => {
                                 return <option key={value}>{value}</option>;
@@ -125,7 +126,7 @@ const NewList = () => {
                             name="dish_cuisine_type_select"
                             id="dish_cuisine_type"
                             onChange={(event) => handleOnChangeFilters(event, i)}
-                            className="border border-gray-300 rounded-lg p-2"
+                            className="border border-green-300 rounded-lg p-2"
                         >
                             {userOptions?.DISH_CUISINE_TYPE.map((value) => {
                                 return <option key={value}>{value}</option>;
@@ -138,7 +139,7 @@ const NewList = () => {
                             name="dish_category_select"
                             id="dish_category"
                             onChange={(event) => handleOnChangeFilters(event, i)}
-                            className="border border-gray-300 rounded-lg p-2"
+                            className="border border-green-300 rounded-lg p-2"
                         >
                             {userOptions?.DISH_CATEGORY.map((value) => {
                                 return <option key={value}>{value}</option>;
@@ -151,7 +152,7 @@ const NewList = () => {
                             name="portion_size_select"
                             id="portion_size"
                             onChange={(event) => handleOnChangeFilters(event, i)}
-                            className="border border-gray-300 rounded-lg p-2"
+                            className="border border-green-300 rounded-lg p-2"
                         >
                             {userOptions?.PORTION_SIZE.map((value) => {
                                 return <option key={value}>{value}</option>;
@@ -164,7 +165,7 @@ const NewList = () => {
                             name="price_range_select"
                             id="price_range"
                             onChange={(event) => handleOnChangeFilters(event, i)}
-                            className="border border-gray-300 rounded-lg p-2"
+                            className="border border-green-300 rounded-lg p-2"
                         >
                             {userOptions?.PRICE_RANGE.map((value) => {
                                 return <option key={value}>{value}</option>;
@@ -177,7 +178,7 @@ const NewList = () => {
                             name="taste_profile_select"
                             id="taste_profile"
                             onChange={(event) => handleOnChangeFilters(event, i)}
-                            className="border border-gray-300 rounded-lg p-2"
+                            className="border border-green-300 rounded-lg p-2"
                         >
                             {userOptions?.TASTE_PROFILE.map((value) => {
                                 return <option key={value}>{value}</option>;
@@ -197,8 +198,6 @@ const NewList = () => {
             </div>
         );
     }
-
-
 
     const handleOnSubmitForm = (event, formIndex) => {
         event.preventDefault();
@@ -226,11 +225,14 @@ const NewList = () => {
             formData.append('file', file);
         });
 
+        setReviewSubmitted("Review has been submitted, Review will be stored as soon as this message disappears..")
         axios.post("http://localhost:3000/v1/list/create", formData, config)
             .then((response) => {
+                setReviewSubmitted();
                 console.log("response", response);
             })
             .catch((error) => {
+                alert("Error occured while submitted review. Try again later.")
                 console.log("error", error);
             });
     }
@@ -265,7 +267,7 @@ const NewList = () => {
 
                                             ))}</div>) : (
                                             <div className="border-b-2 flex justify-center align-middle  h-80 ">
-                                                <span className='text-gray-600 text-3xl text-opacity-30 self-center'> Uploaded photos will be shown here </span>
+                                                <span className='text-green-600 text-3xl text-opacity-30 self-center'> Uploaded photos will be shown here </span>
                                             </div>
                                         )}
                                     <div className="flex flex-col p-2 m-2">
@@ -275,7 +277,7 @@ const NewList = () => {
                                                 id="dishName"
                                                 placeholder="Grilled Cheese"
                                                 onChange={(event) => handleChangingFormDataInput(event, i)}
-                                                className="border border-gray-300 rounded p-2 m-2"
+                                                className="border border-green-300 rounded p-2 m-2"
                                             />
                                         </div>
                                         <label htmlFor="notes">Notes:</label>
@@ -284,7 +286,7 @@ const NewList = () => {
                                             placeholder="Notes"
                                             id="description"
                                             onChange={(event) => handleChangingFormDataInput(event, i)}
-                                            className="border border-gray-300 rounded p-2 m-2"
+                                            className="border border-green-300 rounded p-2 m-2"
                                         ></textarea>
                                     </div>
                                 </div>
@@ -310,7 +312,7 @@ const NewList = () => {
                                     >
                                         Submit Review
                                     </button>
-
+                                    {reviewSubmitted}
                                 </div>
                             </div>
                         </div>
@@ -321,93 +323,118 @@ const NewList = () => {
         return forms;
     };
 
-
-    const handleEditingExistingDishes = (dish) => {
-        console.log(dish);
-    }
-
     const handleDisplayingExistingDishTags = (dish) => {
         const userOptionListArray = Object.entries(dish.userOptions);
 
         return (
-            <div>
-                {
-                    userOptionListArray[0][0] === 'spice_level' &&
-                    <div>
-                        <span>Spice Level: </span>
-                        <span>{userOptionListArray[0][1]}</span>
+            <div className="border-green-300 border-t-2 border-b-2 py-1 mb-4 flex flex-col flex-wrap">
+                <div className='md:grid md:grid-cols-3 lg:grid lg:grid-cols-2 justify-between m-4'>
+                    <div className="flex flex-col lg:w-1/2 mx-2">
+                        {
+                            userOptionListArray[0][0] === 'spice_level' &&
+                            <div>
+                                <span>Spice Level: </span>
+                                <div className='border rounded-lg p-2 border-green-300'>{userOptionListArray[0][1]}</div>
+                            </div>
+                        }
                     </div>
-                }
-                {
-                    userOptionListArray[1][0] === 'dish_cuisine_type' &&
-                    <div>
-                        <span>Dish Cuisine Type: </span>
-                        <span>{userOptionListArray[1][1]}</span>
+                    <div className="flex flex-col lg:w-1/2 mx-2">
+                        {
+                            userOptionListArray[1][0] === 'dish_cuisine_type' &&
+                            <div>
+                                <span>Dish Cuisine Type: </span>
+                                <div className='border rounded-lg p-2 border-green-300'>{userOptionListArray[1][1]}</div>
+                            </div>
+                        }
                     </div>
-                }
-                {
-                    userOptionListArray[2][0] === 'dish_category' &&
-                    <div>
-                        <span>Dish Category: </span>
-                        <span>{userOptionListArray[2][1]}</span>
+                    <div className="flex flex-col lg:w-1/2 mx-2">
+                        {
+                            userOptionListArray[2][0] === 'dish_category' &&
+                            <div>
+                                <span>Dish Category: </span>
+                                <div className='border rounded-lg p-2 border-green-300'>{userOptionListArray[2][1]}</div>
+                            </div>
+                        }
                     </div>
-                }
-                {
-                    userOptionListArray[3][0] === 'portion_size' &&
-                    <div>
-                        <span>Portion Size: </span>
-                        <span>{userOptionListArray[3][1]}</span>
+                    <div className="flex flex-col lg:w-1/2 mx-2">
+                        {
+                            userOptionListArray[3][0] === 'portion_size' &&
+                            <div>
+                                <span>Portion Size: </span>
+                                <div className='border rounded-lg p-2 border-green-300'>{userOptionListArray[3][1]}</div>
+                            </div>
+                        }
                     </div>
-                }
-                {
-                    userOptionListArray[4][0] === 'price_range' &&
-                    <div>
-                        <span>Price Range: </span>
-                        <span>{userOptionListArray[4][1]}</span>
+                    <div className="flex flex-col lg:w-1/2 mx-2">
+                        {
+                            userOptionListArray[4][0] === 'price_range' &&
+                            <div>
+                                <span>Price Range: </span>
+                                <div className='border rounded-lg p-2 border-green-300'>{userOptionListArray[4][1]}</div>
+                            </div>
+                        }
                     </div>
-                }
-                {
-                    userOptionListArray[5][0] === 'taste_profile' &&
-                    <div>
-                        <span>Taste Profile: </span>
-                        <span>{userOptionListArray[5][1]}</span>
+                    <div className="flex flex-col lg:w-1/2 mx-2">
+                        {
+                            userOptionListArray[5][0] === 'taste_profile' &&
+                            <div>
+                                <span>Taste Profile: </span>
+                                <div className='border rounded-lg p-2 border-green-300'>{userOptionListArray[5][1]}</div>
+                            </div>
+                        }
                     </div>
-                }
+                </div>
             </div>
+
+
         )
     }
 
     return (
-        <div className="container mx-auto text-gray-800">
-            <div className="p-4 font-bold m-5 text-3xl text-gray-800">
+        <div className="container mx-auto text-green-800">
+            <div className="p-4 font-bold m-5 text-3xl text-green-800">
                 <span>{queryParams.restaurantName}</span>
             </div>
-            <div className="m-2 p-2 text-2xl font-bold text-gray-800">
+            <div className="m-2 p-2 text-2xl font-bold text-green-800">
                 Filter to find existing dishes
             </div>
             {filters(-1)}
             <hr className="my-4" />
             {/* existing dishes */}
-            {existingDishes?.map((dish) => (
-                <div className="dish-card" key={dish._id}>
-                    <div>Dish Name: {dish.dishName}</div>
-                    <div>Description: {dish.description}</div>
-                    <div className="flex flex-row">
-                        {dish.photo.length !== 0 && <span>Dish Images:</span>}
-                        <div className="overflow-y-auto flex flex-row">
-                            {dish.photo.map((photo) => (
-                                <img
-                                    src={photo}
-                                    alt="dishPhoto"
-                                    className="w-32 h-32 object-cover rounded mr-2"
-                                    key={photo}
-                                />
-                            ))}
+            <div className='grid grid-cols-2'>
+                {existingDishes?.map((dish) => (
+                    <div className="border border-green-500 rounded-lg m-2 p-4" key={dish._id}>
+                        <div className="flex flex-col p-2 m-2">
+                            <div className='flex flex-col justify-around '>
+                                <label htmlFor="dishname" >Dish Name:</label>
+                                <div className='border border-green-300 rounded p-2 m-2'>{dish.dishName}</div>
+                                <label htmlFor="notes">Notes:</label>
+                                <div className='border border-green-300 rounded p-2 m-2'>{dish.description}</div>
+                            </div>
                         </div>
+
+                        <div className="">
+                            {dish.photo.length !== 0 && <span>Dish Images:</span>}
+                            {dish.photo.length !== 0 ? <div className="border-b-2 overflow-y-auto h-80 max-h-80 grid grid-cols-2">
+                                {dish.photo.map((photo) => (
+                                    <div>
+
+                                        <img
+                                            src={photo}
+                                            alt="dishPhoto"
+                                            className="p-2 object-cover rounded mr-2"
+                                            key={photo}
+                                        />
+                                    </div>
+                                ))}
+                            </div> : <div className="border-b-2 flex justify-center align-middle  h-80 ">
+                                <span className='text-green-600 text-3xl text-opacity-30 self-center'> No Photos </span>
+                            </div>}
+                        </div>
+                        <div>Tags: {handleDisplayingExistingDishTags(dish)}</div>
                     </div>
-                    <div>Tags: {handleDisplayingExistingDishTags(dish)}</div>
-                </div>
-            ))}
+                ))}
+            </div>
             <div className="py-4">
                 <button
                     className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded mb-4"
