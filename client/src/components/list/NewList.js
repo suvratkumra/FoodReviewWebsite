@@ -104,8 +104,8 @@ const NewList = () => {
     const filters = (i) => {
         return (
             <div className="border-2 border-gray-300 p-4 mb-4 flex flex-col flex-wrap">
-                <div className='flex flex-row justify-between'>
-                    <div className="flex flex-col w-1/4">
+                <div className='md:grid md:grid-cols-3 lg:flex lg:flex-row justify-between m-4'>
+                    <div className="flex flex-col lg:w-1/4 mx-2">
 
                         <label htmlFor="spice_level_select">Spice Level</label>
                         <select
@@ -119,7 +119,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col w-1/4">
+                    <div className="flex flex-col lg:w-1/4 mx-2">
                         <label htmlFor="dish_cuisine_type_select">Dish Cuisine Type</label>
                         <select
                             name="dish_cuisine_type_select"
@@ -132,7 +132,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col w-1/4">
+                    <div className="flex flex-col lg:w-1/4 mx-2">
                         <label htmlFor="dish_category_select">Dish Category</label>
                         <select
                             name="dish_category_select"
@@ -145,7 +145,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col w-1/4">
+                    <div className="flex flex-col lg:w-1/4 mx-2">
                         <label htmlFor="portion_size_select">Portion Size</label>
                         <select
                             name="portion_size_select"
@@ -158,7 +158,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col w-1/4">
+                    <div className="flex flex-col lg:w-1/4 mx-2">
                         <label htmlFor="price_range_select">Price Range</label>
                         <select
                             name="price_range_select"
@@ -171,7 +171,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col w-1/4">
+                    <div className="flex flex-col lg:w-1/4 mx-2">
                         <label htmlFor="taste_profile_select">Taste Profile</label>
                         <select
                             name="taste_profile_select"
@@ -248,12 +248,12 @@ const NewList = () => {
 
         for (let i = 0; i < formCount; i++) {
             forms.push(
-                <div className="border-2 border-red-500 rounded-lg border-dotted m-2 p-4">
+                <div className="border border-green-500 rounded-lg m-2 p-4">
                     <form onSubmit={(event) => handleOnSubmitForm(event, i)}>
                         <div id="main_container">
                             <div id="queue_card_container" className="w-full">
-                                <div className="flex">
-                                    <div id="dish_image" className="overflow-y-auto max-h-80 w-1/2">
+                                <div className="">
+                                    <div id="dish_image" className="border-b-2 overflow-y-auto max-h-80 grid grid-cols-2">
                                         {formDataList[i]?.dishImageInformation?.map((file) => (
                                             <img
                                                 key={file.name}
@@ -286,7 +286,7 @@ const NewList = () => {
                                 <div className='mt-5'>
                                     <label htmlFor="tags" className=''>Tags:</label>
                                 </div>
-                                <div className='md:text-xs'>
+                                <div className='md:text-sm'>
 
                                     {filters(i)}
                                 </div>
@@ -386,7 +386,7 @@ const NewList = () => {
             {/* existing dishes */}
             {existingDishes?.map((dish) => (
                 <div className="dish-card" key={dish._id}>
-                    <div>DishName: {dish.dishName}</div>
+                    <div>Dish Name: {dish.dishName}</div>
                     <div>Description: {dish.description}</div>
                     <div className="flex flex-row">
                         {dish.photo.length !== 0 && <span>Dish Images:</span>}
