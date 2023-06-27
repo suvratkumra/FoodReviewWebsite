@@ -9,7 +9,7 @@ const Authorization = ({ children }) => {
 
     const [validToken, setValidToken] = useState(false);
 
-    
+
 
     useEffect(() => {
         const config = {
@@ -25,7 +25,7 @@ const Authorization = ({ children }) => {
                 setValidToken(false);
                 // console.log(error.response);
             })
-    
+
     }, [])
 
     const removeLocalStorage = () => {
@@ -34,19 +34,29 @@ const Authorization = ({ children }) => {
 
     return (
         <div>
-            {!validToken ?
-                <div>You are not authorized / session expired, You can log in again
-                    <Link to="/login">
-                        <button onClick={removeLocalStorage}>
-                            Login
+            {!validToken ? (
+                <div className="text-center text-4xl py-8 px-8 mx-8 my-8 flex flex-col justify-between">
+                    <div className="text-gray-700 text-3xl m-10 p-10 flex flex-col">
+                        <span>
+                            You are <span className="font-bold">not authorized or session has expired</span>
+                        </span>
+                    </div>
+                    <Link to="/login" className="flex flex-col">
+                        <div className="mb-4 p-2">You can log in again</div>
+                        <button
+                            className="bg-green-500 hover:bg-green-600 text-gray-500 py-4 px-4 rounded-lg font-semibold w-1/2 self-center my-24"
+                            onClick={removeLocalStorage}
+                        >
+                            <span>Login</span>
                         </button>
                     </Link>
+
                 </div>
-                : (
-                    < div >
-                        {children}
-                    </div >)}
+            ) : (
+                <div>{children}</div>
+            )}
         </div>
+
     )
 }
 
