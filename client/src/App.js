@@ -7,7 +7,7 @@ import Signup from './components/signup/Signup';
 import Login from './components/login/Login';
 import Authorization from './components/authorization/Authorization';
 import Profile from './components/profile/Profile';
-import About from './components/about/About';
+import Error from './components/error/Error';
 import GlobalHandler from './components/globalHandler/GlobalHandler';
 import Verification from './components/verify/Verification';
 import './output.css';
@@ -33,14 +33,6 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route
-            path="/about"
-            element={
-              <Authorization>
-                <About />
-              </Authorization>
-            }
-          />
-          <Route
             path="/profile"
             element={
               <Authorization>
@@ -57,6 +49,7 @@ function App() {
             }
           />
           <Route path="/verification-page" element={<Verification />} />
+          <Route path="/*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </div>

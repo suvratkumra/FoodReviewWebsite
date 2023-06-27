@@ -80,9 +80,6 @@ const Navbar = () => {
                         <Link className='relative inline-block text-gray-600 hover:text-gray-800 duration-300 transition-all ease-in-out hover:underline ' to="/">Home</Link>
 
                     </li>
-                    <li>
-                        <Link className='relative inline-block text-gray-600 hover:text-gray-800 duration-300 transition-all ease-in-out hover:underline ' to="/about">About</Link>
-                    </li>
                     {validToken ? (
                         <>
                             <li>

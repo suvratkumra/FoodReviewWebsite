@@ -44,7 +44,7 @@ const Authorization = ({ children }) => {
                     <Link to="/login" className="flex flex-col">
                         <div className="mb-4 p-2">You can log in again</div>
                         <button
-                            className="bg-green-500 hover:bg-green-600 text-gray-500 py-4 px-4 rounded-lg font-semibold w-1/2 self-center my-24"
+                            className="bg-green-500 hover:bg-green-600 text-white py-4 px-4 rounded-lg font-semibold w-1/2 self-center my-24"
                             onClick={removeLocalStorage}
                         >
                             <span>Login</span>

@@ -112,29 +112,28 @@ const Home = () => {
                         </button>
                     </div>
                 </div>
-                <h1 className="text-2xl text-center py-4 font-mono">Click on any restaurant to start creating your list</h1>
-                <div className='border-gray-200 border-2 p-5 text-gray-800'>
-                    <p className="text-center pb-4 text-xl font-bold">Update the radius here for your search.</p>
-                    <div className="flex justify-center items-center pb-4 flex-1">
-                        <input
-                            type="range"
-                            id="range"
-                            min={200}
-                            max={2000}
-                            step={100}
-                            onChange={handleRadiusOnChangeAction}
-                            className="w-2/4"
-                        />
-                        <button
-                            type="button"
-                            name="submitRadius"
-                            id="submitRadius"
-                            onClick={handleUpdatedRadiusAction}
-                            className="ml-2 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded w-2/4"
-                        >
-                            Click to update radius
-                        </button>
-                    </div>
+                <h1 className="text-2xl text-center py-4">Click on any restaurant to start creating your list</h1>
+                <p className="text-center pb-4">Update the radius here for your search.</p>
+                <div className="flex justify-center items-center pb-4">
+                    <input
+                        type="range"
+                        id="range"
+                        min={200}
+                        max={2000}
+                        step={100}
+                        onChange={handleRadiusOnChangeAction}
+                        className="w-64"
+                    />
+                    <label htmlFor='range'> <span className='text-gray-600 text-xl'>{radius.tempValue}m</span> </label>
+                    <button
+                        type="button"
+                        name="submitRadius"
+                        id="submitRadius"
+                        onClick={handleUpdatedRadiusAction}
+                        className="ml-2 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+                    >
+                        Click to update radius
+                    </button>
                 </div>
                 {displayLoading && <img src={loadingImage} alt="Loading" className="mx-auto" />}
                 <div className="flex flex-col items-center">
