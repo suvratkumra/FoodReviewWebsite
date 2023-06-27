@@ -103,9 +103,9 @@ const NewList = () => {
 
     const filters = (i) => {
         return (
-            <div className="border-2 border-gray-300 p-4 mb-4 flex flex-col flex-wrap">
-                <div className='md:grid md:grid-cols-3 lg:flex lg:flex-row justify-between m-4'>
-                    <div className="flex flex-col lg:w-1/4 mx-2">
+            <div className="border-gray-300 border-t-2 border-b-2 py-1 mb-4 flex flex-col flex-wrap">
+                <div className='md:grid md:grid-cols-3 lg:grid lg:grid-cols-2 justify-between m-4'>
+                    <div className="flex flex-col lg:w-1/2 mx-2">
 
                         <label htmlFor="spice_level_select">Spice Level</label>
                         <select
@@ -119,7 +119,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col lg:w-1/4 mx-2">
+                    <div className="flex flex-col lg:w-1/2 mx-2">
                         <label htmlFor="dish_cuisine_type_select">Dish Cuisine Type</label>
                         <select
                             name="dish_cuisine_type_select"
@@ -132,7 +132,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col lg:w-1/4 mx-2">
+                    <div className="flex flex-col lg:w-1/2 mx-2">
                         <label htmlFor="dish_category_select">Dish Category</label>
                         <select
                             name="dish_category_select"
@@ -145,7 +145,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col lg:w-1/4 mx-2">
+                    <div className="flex flex-col lg:w-1/2 mx-2">
                         <label htmlFor="portion_size_select">Portion Size</label>
                         <select
                             name="portion_size_select"
@@ -158,7 +158,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col lg:w-1/4 mx-2">
+                    <div className="flex flex-col lg:w-1/2 mx-2">
                         <label htmlFor="price_range_select">Price Range</label>
                         <select
                             name="price_range_select"
@@ -171,7 +171,7 @@ const NewList = () => {
                             })}
                         </select>
                     </div>
-                    <div className="flex flex-col lg:w-1/4 mx-2">
+                    <div className="flex flex-col lg:w-1/2 mx-2">
                         <label htmlFor="taste_profile_select">Taste Profile</label>
                         <select
                             name="taste_profile_select"
@@ -253,16 +253,21 @@ const NewList = () => {
                         <div id="main_container">
                             <div id="queue_card_container" className="w-full">
                                 <div className="">
-                                    <div id="dish_image" className="border-b-2 overflow-y-auto max-h-80 grid grid-cols-2">
-                                        {formDataList[i]?.dishImageInformation?.map((file) => (
-                                            <img
-                                                key={file.name}
-                                                src={URL.createObjectURL(file)}
-                                                alt={file.name}
-                                                className="p-2"
-                                            />
-                                        ))}
-                                    </div>
+                                    {formDataList[i]?.dishImageInformation.length !== 0 ?
+                                        (<div id="dish_image" className="border-b-2 overflow-y-auto h-80 max-h-80 grid grid-cols-2">
+                                            {formDataList[i]?.dishImageInformation?.map((file) => (
+                                                <img
+                                                    key={file.name}
+                                                    src={URL.createObjectURL(file)}
+                                                    alt={file.name}
+                                                    className="p-2"
+                                                />
+
+                                            ))}</div>) : (
+                                            <div className="border-b-2 flex justify-center align-middle  h-80 ">
+                                                <span className='text-gray-600 text-3xl text-opacity-30 self-center'> Uploaded photos will be shown here </span>
+                                            </div>
+                                        )}
                                     <div className="flex flex-col p-2 m-2">
                                         <div className='flex flex-col justify-around '>
                                             <label htmlFor="dishname" >Dish Name:</label>
@@ -287,7 +292,6 @@ const NewList = () => {
                                     <label htmlFor="tags" className=''>Tags:</label>
                                 </div>
                                 <div className='md:text-sm'>
-
                                     {filters(i)}
                                 </div>
                                 <input
@@ -430,7 +434,7 @@ const NewList = () => {
                     Add more dishes
                 </button>
             </div>
-            <div className="flex flex-col my-4">{handleAddingDishForm()}</div>
+            <div className="md:flex md:flex-col md:my-4 lg:grid lg:grid-cols-2">{handleAddingDishForm()}</div>
         </div>
     );
 

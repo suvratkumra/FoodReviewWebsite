@@ -140,7 +140,7 @@ const Home = () => {
                     {state.restaurants_nearby_names?.map((value, index) => (
                         <div
                             key={`${value} ${index}`}
-                            className="border border-gray-400 rounded-lg my-4 p-4 flex justify-between items-center w-full md:w-3.5"
+                            className="border border-gray-400 rounded-lg my-4 p-4 flex justify-between items-center w-full "
                         >
                             <span className="text-xl">{value}</span>
                             <Link
