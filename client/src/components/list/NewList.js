@@ -434,6 +434,7 @@ const NewList = () => {
                         <div>Tags: {handleDisplayingExistingDishTags(dish)}</div>
                     </div>
                 ))}
+                {handleAddingDishForm()}
             </div>
             <div className="py-4">
                 <button
@@ -461,7 +462,7 @@ const NewList = () => {
                     Add more dishes
                 </button>
             </div>
-            <div className="md:flex md:flex-col md:my-4 lg:grid lg:grid-cols-2">{handleAddingDishForm()}</div>
+            <div className="md:flex md:flex-col md:my-4 lg:grid lg:grid-cols-2">{ }</div>
         </div>
     );
 
